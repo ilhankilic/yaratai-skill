@@ -7,11 +7,44 @@ Thank you for your interest in contributing! This guide covers the essentials.
 ## Getting Started
 
 ```bash
-git clone https://github.com/<your-user>/skillforge.git
-cd skillforge
+git clone https://github.com/ilhankilic/yaratai-skill.git
+cd yaratai-skill
+git checkout dev              # always work on dev branch
 pip install -e ".[all]"       # install all optional dependencies
-pytest                         # run all tests
+pytest                         # run all tests (301 should pass)
 ```
+
+---
+
+## Branch Strategy
+
+| Branch | Purpose | Who pushes |
+|--------|---------|------------|
+| `master` | **Production** — stable, tested, ready for `docker compose up` | Merge from `dev` only |
+| `dev` | **Development** — all new features and fixes land here first | Everyone |
+
+### Workflow
+
+```
+1. git checkout dev
+2. git pull origin dev
+3. (make changes, add tests)
+4. pytest                       # all tests must pass
+5. git add -A && git commit -m "feat(skills): add category.skill-name"
+6. git push origin dev
+7. When dev is stable → merge dev into master (release)
+```
+
+### Release to master
+
+```bash
+git checkout master
+git merge dev --no-ff -m "release: <description>"
+git push origin master
+git checkout dev               # go back to dev
+```
+
+> **Rule**: Never push directly to `master`. Always develop on `dev` and merge when ready.
 
 ---
 
@@ -42,6 +75,7 @@ Before submitting a PR for a new skill, confirm every item:
 
 ## Pull Request Guidelines
 
+- **Target branch**: always `dev` (never `master` directly)
 - One skill per PR (unless tightly coupled)
 - PR title: `feat(skills): add <category>.<skill-name>`
 - Include a brief description of what the skill does

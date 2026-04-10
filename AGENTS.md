@@ -37,12 +37,38 @@
 - **Anthropic** (auto-create): env `ANTHROPIC_API_KEY`.
 
 ## Workflow for agents
-- When adding a skill: create the 4-file quartet under `skills/<category>/<name>/`.
-- When a user pulls this repo, the agent should: (1) run `docker compose up -d`, (2) open `http://localhost:9147`, (3) use the API to execute skills.
+- **Branch**: Always work on `dev` branch. Never push directly to `master`.
+- **Git flow**: `dev` = development, `master` = production (stable releases only via merge from dev).
+- When adding a skill: `git checkout dev` → create the 4-file quartet under `skills/<category>/<name>/`.
+- When a user pulls this repo, the agent should: (1) `git clone https://github.com/ilhankilic/yaratai-skill.git && cd yaratai-skill`, (2) `docker compose up -d`, (3) open `http://localhost:9147`, (4) use the API to execute skills.
 - When editing the master prompt (`skillforge-claude-desktop-prompt.md`): preserve session block ordering.
 - Run tests: `pytest tests/ -v` (core + API), `pytest skills/<cat>/<name>/test.py -v` (per-skill).
 - Skill tests mock all external services — they must run offline.
 - Skill validation: `POST /api/sync/validate` or `from skillforge.sync import validate_skill_directory`.
+- **Commit convention**: `feat(skills): add <category>.<name>`, `fix: <description>`, `docs: <description>`.
+- **Before pushing**: always run `pytest` — all 301+ tests must pass.
+
+## Quick API usage
+```bash
+# Health check
+curl http://localhost:9147/health
+
+# List all skills (with optional filters)
+curl http://localhost:9147/api/skills
+curl http://localhost:9147/api/skills?category=data
+curl http://localhost:9147/api/skills?search=csv
+
+# Get full skill info (schema + SKILL.md)
+curl http://localhost:9147/api/skills/data.json-to-csv/info
+
+# Execute a skill
+curl -X POST http://localhost:9147/api/skills/data.json-to-csv/run \
+  -H "Content-Type: application/json" \
+  -d '{"data": {"records": [{"name": "Alice", "age": 30}]}}'
+
+# Response shape (always):
+# {"success": true/false, "data": {...}, "error": "", "metadata": {...}}
+```
 
 ## Reference files
 | Concept          | File                                | Section               |
