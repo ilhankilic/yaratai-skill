@@ -1,0 +1,43 @@
+{
+  "skill_id": "data.shapefile-convert",
+  "version": "1.0.0",
+  "description": "Convert Shapefile to GeoJSON or KML with optional CRS reprojection.",
+  "input": {
+    "type": "object",
+    "required": ["file_path"],
+    "properties": {
+      "file_path": {
+        "type": "string",
+        "description": "Path to the .shp file."
+      },
+      "output_format": {
+        "type": "string",
+        "description": "Target format: geojson | kml",
+        "default": "geojson"
+      },
+      "target_crs": {
+        "type": "string",
+        "description": "Target CRS in EPSG format, e.g. 'EPSG:4326'.",
+        "default": "EPSG:4326"
+      }
+    }
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "content": {
+        "type": "string",
+        "description": "The converted file content as a string."
+      },
+      "feature_count": {
+        "type": "integer",
+        "description": "Number of features converted."
+      },
+      "crs": {
+        "type": "string",
+        "description": "CRS of the output."
+      }
+    }
+  }
+}
+

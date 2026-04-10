@@ -1,0 +1,19 @@
+# MediScreen Full Pipeline
+# Runs triage → symptom-parser → report-gen in sequence.
+# report-gen only executes when triage result is KIRMIZI.
+
+name: mediscreen-full
+mode: sequential
+pipe: true
+
+steps:
+  - skill_id: mediscreen.triage
+    node: local
+
+  - skill_id: mediscreen.symptom-parser
+    node: local
+
+  - skill_id: mediscreen.report-gen
+    node: cloud
+    condition: "previous.data.priority == KIRMIZI"
+

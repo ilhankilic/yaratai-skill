@@ -1,0 +1,42 @@
+{
+  "skill_id": "data.pdf-extract",
+  "version": "1.0.0",
+  "description": "Extract text and tables from a PDF file using pdfplumber.",
+  "input": {
+    "type": "object",
+    "required": [],
+    "properties": {
+      "file_path": {
+        "type": "string",
+        "description": "Path to the PDF file on disk."
+      },
+      "base64": {
+        "type": "string",
+        "description": "Base64-encoded PDF content (alternative to file_path)."
+      },
+      "pages": {
+        "type": "array",
+        "description": "Specific page numbers (0-based) to extract. Default: all.",
+        "default": []
+      }
+    }
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "text": {
+        "type": "string",
+        "description": "Full extracted text."
+      },
+      "tables": {
+        "type": "array",
+        "description": "List of tables, each as a list of row dicts."
+      },
+      "pages": {
+        "type": "integer",
+        "description": "Total number of pages in the PDF."
+      }
+    }
+  }
+}
+

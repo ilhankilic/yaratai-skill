@@ -1,0 +1,30 @@
+{
+  "skill_id": "category.skill-name",
+  "version": "1.0.0",
+  "description": "Short description of what this skill does.",
+  "input": {
+    "type": "object",
+    "required": ["example_field"],
+    "properties": {
+      "example_field": {
+        "type": "string",
+        "description": "An example required input field."
+      },
+      "optional_field": {
+        "type": "integer",
+        "description": "An optional parameter with a default.",
+        "default": 10
+      }
+    }
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "result": {
+        "type": "string",
+        "description": "The main output value."
+      }
+    }
+  }
+}
+

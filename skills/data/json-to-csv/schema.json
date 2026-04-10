@@ -1,0 +1,44 @@
+{
+  "skill_id": "data.json-to-csv",
+  "version": "1.0.0",
+  "description": "Convert a JSON array into CSV text with support for nested fields via dot notation.",
+  "input": {
+    "type": "object",
+    "required": ["records"],
+    "properties": {
+      "records": {
+        "type": "array",
+        "description": "List of JSON objects to convert."
+      },
+      "fields": {
+        "type": "array",
+        "description": "Explicit list of field paths (dot notation). If omitted, auto-detected.",
+        "default": []
+      },
+      "delimiter": {
+        "type": "string",
+        "description": "CSV delimiter character.",
+        "default": ","
+      },
+      "bom": {
+        "type": "boolean",
+        "description": "Prepend UTF-8 BOM for Excel compatibility.",
+        "default": false
+      }
+    }
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "csv": {
+        "type": "string",
+        "description": "The CSV content as a string."
+      },
+      "row_count": {
+        "type": "integer",
+        "description": "Number of data rows written."
+      }
+    }
+  }
+}
+

@@ -1,0 +1,59 @@
+{
+  "skill_id": "mediscreen.triage",
+  "version": "1.0.0",
+  "description": "Patient triage assessment powered by a local LLM (Ollama). Returns priority level, department recommendation, warning signs, and estimated wait time.",
+  "input": {
+    "type": "object",
+    "required": ["age", "gender", "complaint"],
+    "properties": {
+      "age": {
+        "type": "integer",
+        "description": "Patient age in years."
+      },
+      "gender": {
+        "type": "string",
+        "description": "Patient gender (erkek / kadın / diğer)."
+      },
+      "complaint": {
+        "type": "string",
+        "description": "Free-text chief complaint in Turkish."
+      },
+      "duration": {
+        "type": "string",
+        "description": "Duration of symptoms, e.g. '2 gün', '3 saat'.",
+        "default": ""
+      },
+      "vitals": {
+        "type": "object",
+        "description": "Optional vital signs: blood_pressure, heart_rate, temperature, spo2.",
+        "default": {}
+      }
+    }
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "priority": {
+        "type": "string",
+        "description": "Triage level: YESIL | SARI | TURUNCU | KIRMIZI"
+      },
+      "department": {
+        "type": "string",
+        "description": "Recommended department."
+      },
+      "warning_signs": {
+        "type": "array",
+        "description": "List of detected warning signs."
+      },
+      "estimated_wait_minutes": {
+        "type": "integer",
+        "description": "Estimated wait time in minutes."
+      },
+      "reasoning": {
+        "type": "string",
+        "description": "Brief clinical reasoning."
+      }
+    }
+  }
+}
+

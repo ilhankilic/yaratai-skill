@@ -1,0 +1,14 @@
+# Data ETL Pipeline
+# Generic extract → transform → load pattern for data skills.
+
+name: data-etl
+mode: sequential
+pipe: true
+
+steps:
+  - skill_id: data.pdf-extract
+    node: local
+
+  - skill_id: data.json-to-csv
+    node: local
+

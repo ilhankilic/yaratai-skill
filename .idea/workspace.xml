@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b1f4c0d2-59c9-4e40-a11a-20d0ed5dd2ee" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.github/ISSUE_TEMPLATE/new-skill.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.github/workflows/test.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AGENTS.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CONTRIBUTING.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STANDARD.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cli/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cli/_creator.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cli/main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pipelines/data-etl.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pipelines/mediscreen-full.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skillforge/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skillforge/base.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skillforge/nodes/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skillforge/nodes/cloud_node.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skillforge/nodes/local_node.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skillforge/orchestrator.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skillforge/registry.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skills/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skills/_template/SKILL.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skills/_template/schema.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skills/_template/test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skills/_template/worker.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skills/data/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skills/data/json-to-csv/SKILL.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skills/data/json-to-csv/schema.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skills/data/json-to-csv/test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skills/data/json-to-csv/worker.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skills/data/pdf-extract/SKILL.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skills/data/pdf-extract/schema.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skills/data/pdf-extract/test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skills/data/pdf-extract/worker.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skills/data/shapefile-convert/SKILL.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skills/data/shapefile-convert/schema.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skills/data/shapefile-convert/test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skills/data/shapefile-convert/worker.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skills/mediscreen/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skills/mediscreen/triage/SKILL.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skills/mediscreen/triage/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skills/mediscreen/triage/schema.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skills/mediscreen/triage/test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/skills/mediscreen/triage/worker.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_core.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_nodes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/yaratai-skill.iml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_D:/GitHub/yaratai-skill" value="3CAVHqvv1hpvbqxgL8a31VnCcjF" />
+    </persistenceIdMap>
+  </component>
+  <component name="CopilotUserSelectedChatMode">
+    <option name="chatModeId" value="Agent" />
+  </component>
+  <component name="CopilotUserSelectedModel">
+    <selectedModels>
+      <entry key="chat-panel" value="Claude Opus 4.6" />
+      <entry key="agent-panel" value="Claude Opus 4.6" />
+    </selectedModels>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="$USER_HOME$/.config/herd-lite/bin/php.exe" />
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 1,
+  "fromUser": false
+}]]></component>
+  <component name="ProjectId" id="3CAVHqvv1hpvbqxgL8a31VnCcjF" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "reference.webide.settings.project.settings.php",
+    "show.migrate.to.gradle.popup": "false",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.32098.37" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b1f4c0d2-59c9-4e40-a11a-20d0ed5dd2ee" name="Changes" comment="" />
+      <created>1775828280054</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1775828280054</updated>
+      <workItem from="1775828281155" duration="1051000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
+  </component>
+</project>
