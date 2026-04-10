@@ -26,9 +26,9 @@ RUN pip install --no-cache-dir -e ".[dev]"
 # Expose API port
 EXPOSE 9147
 
-# Health check
+# Health check (stdlib only — no httpx dependency required)
 HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
-    CMD python -c "import httpx; r = httpx.get('http://localhost:9147/health'); assert r.status_code == 200"
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:9147/health')"
 
 # Default: start the web panel + API
 CMD ["uvicorn", "skillforge.api.app:app", "--host", "0.0.0.0", "--port", "9147"]

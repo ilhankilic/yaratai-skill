@@ -1,0 +1,5 @@
+{
+  "skill_id": "media.img-compress",
+  "version": "1.0.0",
+  "description": "Compress images (JPEG/PNG/WebP) with quality/size control."
+}

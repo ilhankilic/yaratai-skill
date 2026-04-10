@@ -1,0 +1,5 @@
+{
+  "skill_id": "ui.dark-mode-patch",
+  "version": "1.0.0",
+  "description": "Add dark mode support to CSS or Tailwind HTML."
+}

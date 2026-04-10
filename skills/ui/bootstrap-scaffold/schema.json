@@ -1,0 +1,43 @@
+{
+  "skill_id": "ui.bootstrap-scaffold",
+  "version": "1.0.0",
+  "description": "Generate Bootstrap 5 HTML page from content structure.",
+  "input": {
+    "type": "object",
+    "required": [
+      "page_title",
+      "sections"
+    ],
+    "properties": {
+      "page_title": {
+        "type": "string"
+      },
+      "sections": {
+        "type": "array"
+      },
+      "navbar": {
+        "type": "boolean"
+      },
+      "theme": {
+        "type": "string"
+      },
+      "extra_classes": {
+        "type": "string"
+      }
+    }
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "html": {
+        "type": "string"
+      },
+      "sections_count": {
+        "type": "integer"
+      },
+      "estimated_size_kb": {
+        "type": "number"
+      }
+    }
+  }
+}

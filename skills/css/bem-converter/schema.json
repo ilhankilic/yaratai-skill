@@ -1,0 +1,45 @@
+{
+  "skill_id": "css.bem-converter",
+  "version": "1.0.0",
+  "description": "Convert traditional CSS class names to BEM naming convention.",
+  "input": {
+    "type": "object",
+    "required": [
+      "css"
+    ],
+    "properties": {
+      "css": {
+        "type": "string"
+      },
+      "html": {
+        "type": "string"
+      },
+      "block_prefix": {
+        "type": "string"
+      },
+      "dry_run": {
+        "type": "boolean"
+      }
+    }
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "converted_css": {
+        "type": "string"
+      },
+      "converted_html": {
+        "type": "string"
+      },
+      "rename_map": {
+        "type": "object"
+      },
+      "suggestions_count": {
+        "type": "integer"
+      },
+      "manual_review": {
+        "type": "array"
+      }
+    }
+  }
+}

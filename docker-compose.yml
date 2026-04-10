@@ -8,6 +8,7 @@ services:
       - OLLAMA_BASE_URL=http://ollama:11434
       - OLLAMA_MODEL=gemma3:4b
       - OLLAMA_TIMEOUT=120
+      - SKILLFORGE_ENV=docker
       # Optional — set in .env file or here:
       # - RUNPOD_API_KEY=
       # - ANTHROPIC_API_KEY=
@@ -19,7 +20,7 @@ services:
         condition: service_started
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "python", "-c", "import httpx; r = httpx.get('http://localhost:9147/health'); assert r.status_code == 200"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:9147/health')"]
       interval: 30s
       timeout: 5s
       retries: 3

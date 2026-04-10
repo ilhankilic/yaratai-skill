@@ -1,0 +1,5 @@
+{
+  "skill_id": "api.mock-server",
+  "version": "1.0.0",
+  "description": "Generate mock API responses from OpenAPI or example JSON."
+}

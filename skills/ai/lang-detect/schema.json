@@ -1,0 +1,48 @@
+{
+  "skill_id": "ai.lang-detect",
+  "version": "1.0.0",
+  "description": "Detect text language using heuristics, optionally translate via Ollama.",
+  "input": {
+    "type": "object",
+    "required": [
+      "text"
+    ],
+    "properties": {
+      "text": {
+        "type": "string"
+      },
+      "task": {
+        "type": "string"
+      },
+      "target_language": {
+        "type": "string"
+      },
+      "confidence_threshold": {
+        "type": "number"
+      },
+      "use_heuristics": {
+        "type": "boolean"
+      }
+    }
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "detected_language": {
+        "type": "string"
+      },
+      "detection_confidence": {
+        "type": "number"
+      },
+      "translated_text": {
+        "type": "string"
+      },
+      "detection_method": {
+        "type": "string"
+      },
+      "processing_ms": {
+        "type": "number"
+      }
+    }
+  }
+}

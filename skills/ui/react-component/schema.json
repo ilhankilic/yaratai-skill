@@ -1,0 +1,45 @@
+{
+  "skill_id": "ui.react-component",
+  "version": "1.0.0",
+  "description": "Generate TypeScript React component with Tailwind CSS.",
+  "input": {
+    "type": "object",
+    "required": [
+      "component_name"
+    ],
+    "properties": {
+      "component_name": {
+        "type": "string"
+      },
+      "description": {
+        "type": "string"
+      },
+      "props": {
+        "type": "array"
+      },
+      "variant": {
+        "type": "string"
+      },
+      "with_storybook": {
+        "type": "boolean"
+      }
+    }
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "component_code": {
+        "type": "string"
+      },
+      "story_code": {
+        "type": "string"
+      },
+      "prop_count": {
+        "type": "integer"
+      },
+      "has_state": {
+        "type": "boolean"
+      }
+    }
+  }
+}

@@ -4,14 +4,13 @@ from __future__ import annotations
 
 import json
 import logging
-from pathlib import Path
 from typing import Any
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
 from skillforge.base import SkillInput, SkillOutput
-from skillforge.registry import discover_skills, load_skill, list_skills
+from skillforge.registry import load_skill, list_skills
 
 logger = logging.getLogger("skillforge.api")
 
@@ -40,9 +39,21 @@ class SkillInfo(BaseModel):
 # ── Endpoints ────────────────────────────────────────────────────────
 
 @router.get("")
-async def get_skills(category: str | None = None) -> list[dict[str, Any]]:
-    """List all registered skills, optionally filtered by category."""
-    return list_skills(category=category)
+async def get_skills(
+    category: str | None = None,
+    search: str | None = None,
+) -> list[dict[str, Any]]:
+    """List all registered skills, optionally filtered by category or search term."""
+    results = list_skills(category=category)
+    if search:
+        q = search.lower()
+        results = [
+            s for s in results
+            if q in s.get("skill_id", "").lower()
+            or q in s.get("title", "").lower()
+            or q in s.get("description", "").lower()
+        ]
+    return results
 
 
 @router.get("/{skill_id:path}/info")

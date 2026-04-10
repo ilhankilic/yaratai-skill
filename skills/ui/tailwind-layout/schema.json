@@ -1,0 +1,5 @@
+{
+  "skill_id": "ui.tailwind-layout",
+  "version": "1.0.0",
+  "description": "Convert HTML with inline styles to Tailwind CSS utility classes."
+}

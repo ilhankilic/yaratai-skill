@@ -1,0 +1,45 @@
+{
+  "skill_id": "js.bundle-analyze",
+  "version": "1.0.0",
+  "description": "Analyze package.json for heavy/duplicate/unused dependencies.",
+  "input": {
+    "type": "object",
+    "required": [
+      "package_json"
+    ],
+    "properties": {
+      "package_json": {
+        "type": "object"
+      },
+      "import_list": {
+        "type": "array"
+      },
+      "size_threshold_kb": {
+        "type": "integer"
+      }
+    }
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "heavy_packages": {
+        "type": "array"
+      },
+      "duplicate_packages": {
+        "type": "array"
+      },
+      "unused_packages": {
+        "type": "array"
+      },
+      "total_approx_size_kb": {
+        "type": "number"
+      },
+      "recommendations": {
+        "type": "array"
+      },
+      "score": {
+        "type": "integer"
+      }
+    }
+  }
+}
