@@ -1,42 +1,67 @@
 # SkillForge
 
-**Real code. Standard I/O. No database. Just workers.**
+**Real code. Standard I/O. No database. Just workers. Docker-ready.**
 
-SkillForge is a stateless AI skill library that developers can import directly from GitHub into their AI-assisted workflows (Claude Code, Cursor, Codex, etc.). Every skill follows the same input/output contract, ships with tests, and requires zero database setup.
-
----
-
-## What is SkillForge?
-
-SkillForge is a collection of **self-contained, stateless Python workers** — each one solves a focused task (triage a patient, convert JSON to CSV, extract text from a PDF) and exposes an identical interface. Think of it as a skill marketplace for AI agents, where every skill:
-
-1. **Follows a standard contract** — `run(input) → {success, data, error, metadata}`
-2. **Ships with four files** — `schema.json`, `worker.py`, `SKILL.md`, `test.py`
-3. **Needs no database** — purely functional, stateless, every call is independent
-
-You can run skills individually via CLI, chain them into YAML-defined pipelines, or let AI agents discover and execute them automatically.
+SkillForge is a stateless AI skill runtime that runs inside Docker. Start the container and instantly get access to every skill — no setup, no database, no boilerplate. AI agents (Claude Code, Cursor, Codex) discover skills automatically and use them on your behalf.
 
 ---
 
-## Quick Start
+## Why SkillForge?
+
+Every developer keeps re-writing the same utility code — CSV converters, PDF parsers, API wrappers, triage logic. SkillForge packages these as **stateless workers** with an identical `run(input) → output` contract. You don't write them; you *use* them.
+
+1. **Docker-first** — `docker compose up` gives you the full runtime + management panel
+2. **Standard contract** — every skill: `{success, data, error, metadata}`
+3. **Community-driven** — anyone can submit skills; approved ones ship to all users
+4. **Agent-friendly** — AI coding assistants auto-discover and execute skills
+
+---
+
+## Quick Start (Docker)
 
 ```bash
-# Clone & install
 git clone https://github.com/<your-user>/skillforge.git
 cd skillforge
+docker compose up -d
+```
+
+Open **http://localhost:9147** — that's it. The management panel lets you:
+
+- 🧩 **Browse** all available skills
+- ▶️ **Execute** any skill with JSON input
+- 🔄 **Sync** community skills from GitHub repos
+- 📥 **Import** individual skills by URL
+
+### Quick Start (Local)
+
+```bash
 pip install -e ".[dev]"
-
-# List available skills
 skillforge list
-
-# Run a skill
 skillforge run data.json-to-csv --input sample.json
+```
 
-# Run a pipeline
-skillforge pipe mediscreen-full --input patient.json
+---
 
-# Run tests for a skill
-skillforge test mediscreen.triage
+## REST API
+
+Once running (Docker or local via `uvicorn skillforge.api.app:app --port 9147`):
+
+| Endpoint                              | Method | Description              |
+|---------------------------------------|--------|--------------------------|
+| `/health`                             | GET    | Health check + stats     |
+| `/api/skills`                         | GET    | List all skills          |
+| `/api/skills/{id}/info`               | GET    | Skill details + schema   |
+| `/api/skills/{id}/run`                | POST   | Execute a skill          |
+| `/api/sync/github`                    | POST   | Sync skills from a repo  |
+| `/api/sync/import`                    | POST   | Import a single skill    |
+| `/api/sync/validate`                  | POST   | Validate a skill dir     |
+
+### Example: Run a skill via API
+
+```bash
+curl -X POST http://localhost:9147/api/skills/data.json-to-csv/run \
+  -H "Content-Type: application/json" \
+  -d '{"data": {"records": [{"name": "Alice", "age": 30}]}}'
 ```
 
 ---
@@ -67,11 +92,18 @@ skillforge test mediscreen.triage
 
 ```
 skillforge/
+├── Dockerfile                  # Container image
+├── docker-compose.yml          # One-command full runtime
 ├── pyproject.toml              # Package definition & dependencies
 ├── skillforge/                 # Core Python package
 │   ├── base.py                 # BaseWorker, SkillInput, SkillOutput
 │   ├── registry.py             # Auto-discovery & loading
 │   ├── orchestrator.py         # Pipeline execution engine
+│   ├── sync.py                 # GitHub sync & skill validation
+│   ├── api/                    # FastAPI REST API + web panel
+│   │   ├── app.py              # Application factory
+│   │   ├── routes/             # health, skills, sync, panel
+│   │   └── templates/          # Panel HTML
 │   └── nodes/
 │       ├── local_node.py       # Ollama adapter
 │       └── cloud_node.py       # RunPod/GCP adapter
@@ -79,10 +111,11 @@ skillforge/
 │   └── main.py                 # Typer CLI (run, list, test, pipe, create)
 ├── skills/
 │   ├── _template/              # Copy this to create a new skill
+│   ├── community/              # Auto-synced skills from GitHub
 │   ├── mediscreen/triage/      # Patient triage skill
 │   └── data/                   # Data processing skills
 ├── pipelines/                  # YAML pipeline definitions
-└── tests/                      # Core & integration tests
+└── tests/                      # Core, API & integration tests
 ```
 
 ---
@@ -111,14 +144,36 @@ See [STANDARD.md](STANDARD.md) for the full specification.
 
 ---
 
-## Use in AI Editors
+## Use with AI Coding Assistants
 
 ### Claude Code / Cursor / Codex
 
-Point your agent at the `skills/` directory or a specific `SKILL.md`:
+When an AI agent clones this repo, it reads `AGENTS.md` and `SKILL.md` files to understand every available skill. The agent can then:
 
+1. Start the runtime: `docker compose up -d`
+2. Discover skills: `GET http://localhost:9147/api/skills`
+3. Execute any skill: `POST http://localhost:9147/api/skills/{id}/run`
+
+Or use the CLI directly:
+
+```bash
+skillforge run data.json-to-csv --input data.json
 ```
-Read skills/mediscreen/triage/SKILL.md and use that skill to triage this patient: ...
+
+### Import Community Skills
+
+Through the web panel (http://localhost:9147 → Sync & Import) or the API:
+
+```bash
+# Import all skills from a community repo
+curl -X POST http://localhost:9147/api/sync/github \
+  -H "Content-Type: application/json" \
+  -d '{"repo_url": "https://github.com/user/skillforge-skills"}'
+
+# Import a single skill
+curl -X POST http://localhost:9147/api/sync/import \
+  -H "Content-Type: application/json" \
+  -d '{"repo_url": "https://github.com/user/repo", "skill_path": "skills/data/my-tool"}'
 ```
 
 ### Auto-Generate a Skill

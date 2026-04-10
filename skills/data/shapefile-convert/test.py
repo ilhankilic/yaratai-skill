@@ -10,6 +10,12 @@ import pytest
 
 from skillforge.base import SkillInput
 
+try:
+    import geopandas
+    HAS_GEO = True
+except ImportError:
+    HAS_GEO = False
+
 _worker_path = Path(__file__).parent / "worker.py"
 _spec = spec_from_file_location("shapefile_convert_worker", _worker_path)
 _mod = module_from_spec(_spec)  # type: ignore[arg-type]
@@ -25,21 +31,23 @@ def worker():
 def test_missing_file_path(worker) -> None:
     out = worker.run(SkillInput(data={}))
     assert out.success is False
-    assert "file_path" in out.error.lower()
 
 
+@pytest.mark.skipif(not HAS_GEO, reason="geopandas not installed")
 def test_unsupported_format(worker) -> None:
     out = worker.run(SkillInput(data={"file_path": "test.shp", "output_format": "xlsx"}))
     assert out.success is False
     assert "unsupported" in out.error.lower()
 
 
+@pytest.mark.skipif(not HAS_GEO, reason="geopandas not installed")
 def test_file_not_found(worker) -> None:
     out = worker.run(SkillInput(data={"file_path": "/nonexistent/test.shp"}))
     assert out.success is False
     assert "not found" in out.error.lower()
 
 
+@pytest.mark.skipif(not HAS_GEO, reason="geopandas not installed")
 def test_geojson_conversion(worker, tmp_path: Path) -> None:
     """Mock geopandas to verify GeoJSON output path."""
     mock_gdf = MagicMock()

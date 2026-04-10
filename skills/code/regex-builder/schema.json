@@ -1,0 +1,29 @@
+{
+  "skill_id": "code.regex-builder",
+  "version": "1.0.0",
+  "description": "Generate regex patterns from natural language descriptions with test validation.",
+  "input": {
+    "type": "object",
+    "required": ["description"],
+    "properties": {
+      "description": {"type": "string", "description": "What the regex should match (Turkish or English)."},
+      "examples_match": {"type": "array", "description": "Strings that SHOULD match.", "default": []},
+      "examples_no_match": {"type": "array", "description": "Strings that should NOT match.", "default": []},
+      "language": {"type": "string", "description": "Target language: python | javascript | go", "default": "python"},
+      "flags": {"type": "array", "description": "Regex flags: IGNORECASE, MULTILINE, DOTALL", "default": []},
+      "named_groups": {"type": "boolean", "description": "Use named capture groups.", "default": false}
+    }
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "pattern": {"type": "string"},
+      "flags_used": {"type": "array"},
+      "explanation": {"type": "string"},
+      "test_results": {"type": "array"},
+      "usage_example": {"type": "string"},
+      "alternatives": {"type": "array"}
+    }
+  }
+}
+

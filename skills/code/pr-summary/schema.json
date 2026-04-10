@@ -1,0 +1,2 @@
+{"skill_id":"code.pr-summary","version":"1.0.0","description":"Generate PR title and description from git diff.","input":{"type":"object","required":["diff"],"properties":{"diff":{"type":"string"},"branch_name":{"type":"string"},"ticket_id":{"type":"string"},"template":{"type":"string","default":"github"},"language":{"type":"string","default":"en"}}},"output":{"type":"object","properties":{"title":{"type":"string"},"body":{"type":"string"},"labels":{"type":"array"},"reviewers_hint":{"type":"array"},"breaking_changes":{"type":"array"}}}}
+

@@ -1,0 +1,43 @@
+services:
+  skillforge:
+    build: .
+    container_name: skillforge
+    ports:
+      - "9147:9147"
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - OLLAMA_MODEL=gemma3:4b
+      - OLLAMA_TIMEOUT=120
+      # Optional — set in .env file or here:
+      # - RUNPOD_API_KEY=
+      # - ANTHROPIC_API_KEY=
+    volumes:
+      # Persist imported community skills across restarts
+      - skillforge_skills:/app/skills/community
+    depends_on:
+      ollama:
+        condition: service_started
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import httpx; r = httpx.get('http://localhost:9147/health'); assert r.status_code == 200"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: skillforge-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+    restart: unless-stopped
+    # Pull default model on first start (runs in background)
+    # To manually pull: docker exec skillforge-ollama ollama pull gemma3:4b
+
+volumes:
+  skillforge_skills:
+    driver: local
+  ollama_models:
+    driver: local
+
