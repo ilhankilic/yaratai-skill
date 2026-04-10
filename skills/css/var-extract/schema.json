@@ -1,0 +1,45 @@
+{
+  "skill_id": "css.var-extract",
+  "version": "1.0.0",
+  "description": "Extract repeated CSS values into custom properties (--var).",
+  "input": {
+    "type": "object",
+    "required": [
+      "css"
+    ],
+    "properties": {
+      "css": {
+        "type": "string"
+      },
+      "min_occurrences": {
+        "type": "integer"
+      },
+      "prefix": {
+        "type": "string"
+      },
+      "categories": {
+        "type": "array"
+      }
+    }
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "converted_css": {
+        "type": "string"
+      },
+      "variables_css": {
+        "type": "string"
+      },
+      "full_css": {
+        "type": "string"
+      },
+      "extracted_count": {
+        "type": "integer"
+      },
+      "variable_map": {
+        "type": "object"
+      }
+    }
+  }
+}

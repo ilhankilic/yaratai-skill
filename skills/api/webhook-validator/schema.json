@@ -1,0 +1,5 @@
+{
+  "skill_id": "api.webhook-validator",
+  "version": "1.0.0",
+  "description": "Validate webhook payloads against JSON Schema and HMAC signatures."
+}

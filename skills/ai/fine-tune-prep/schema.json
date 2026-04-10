@@ -1,0 +1,54 @@
+{
+  "skill_id": "ai.fine-tune-prep",
+  "version": "1.0.0",
+  "description": "Convert raw data into fine-tuning formats (Alpaca, ShareGPT, ChatML).",
+  "input": {
+    "type": "object",
+    "required": [
+      "raw_data"
+    ],
+    "properties": {
+      "raw_data": {
+        "type": "array"
+      },
+      "input_type": {
+        "type": "string"
+      },
+      "output_format": {
+        "type": "string"
+      },
+      "system_prompt": {
+        "type": "string"
+      },
+      "train_split": {
+        "type": "number"
+      },
+      "shuffle": {
+        "type": "boolean"
+      }
+    }
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "train_jsonl": {
+        "type": "string"
+      },
+      "val_jsonl": {
+        "type": "string"
+      },
+      "train_count": {
+        "type": "integer"
+      },
+      "val_count": {
+        "type": "integer"
+      },
+      "avg_tokens_estimate": {
+        "type": "integer"
+      },
+      "format_example": {
+        "type": "object"
+      }
+    }
+  }
+}

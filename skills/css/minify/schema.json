@@ -1,0 +1,48 @@
+{
+  "skill_id": "css.minify",
+  "version": "1.0.0",
+  "description": "Minify CSS, remove dead code, calculate gzip size.",
+  "input": {
+    "type": "object",
+    "required": [
+      "css"
+    ],
+    "properties": {
+      "css": {
+        "type": "string"
+      },
+      "remove_comments": {
+        "type": "boolean"
+      },
+      "remove_unused_vars": {
+        "type": "boolean"
+      },
+      "html_context": {
+        "type": "string"
+      }
+    }
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "minified": {
+        "type": "string"
+      },
+      "original_size_bytes": {
+        "type": "integer"
+      },
+      "minified_size_bytes": {
+        "type": "integer"
+      },
+      "gzip_size_bytes": {
+        "type": "integer"
+      },
+      "reduction_percent": {
+        "type": "number"
+      },
+      "removed_rules_count": {
+        "type": "integer"
+      }
+    }
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "skill_id": "media.audio-trim",
+  "version": "1.0.0",
+  "description": "Trim audio files with fade in/out (simulation mode)."
+}

@@ -1,0 +1,48 @@
+{
+  "skill_id": "js.dead-code",
+  "version": "1.0.0",
+  "description": "Detect unused functions, variables, and imports in JS/TS code.",
+  "input": {
+    "type": "object",
+    "required": [
+      "code"
+    ],
+    "properties": {
+      "code": {
+        "type": "string"
+      },
+      "language": {
+        "type": "string"
+      },
+      "check_exports": {
+        "type": "boolean"
+      },
+      "ignore_patterns": {
+        "type": "array"
+      }
+    }
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "unused_functions": {
+        "type": "array"
+      },
+      "unused_variables": {
+        "type": "array"
+      },
+      "unused_imports": {
+        "type": "array"
+      },
+      "total_dead_lines": {
+        "type": "integer"
+      },
+      "clean_code": {
+        "type": "string"
+      },
+      "confidence": {
+        "type": "number"
+      }
+    }
+  }
+}

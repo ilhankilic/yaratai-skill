@@ -1,210 +1,368 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkillForge — Panel</title>
-    <style>
-        :root {
-            --bg: #0f172a; --surface: #1e293b; --border: #334155;
-            --text: #e2e8f0; --muted: #94a3b8; --accent: #38bdf8;
-            --green: #4ade80; --red: #f87171; --yellow: #fbbf24;
-            --radius: 10px; --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillForge — Dashboard</title>
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   VARIABLES
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+    --bg-0: #09090b; --bg-1: #111113; --bg-2: #18181b; --bg-3: #27272a;
+    --border: #2e2e33; --border-hover: #3f3f46;
+    --text-0: #fafafa; --text-1: #d4d4d8; --text-2: #a1a1aa; --text-3: #71717a;
+    --accent: #6366f1; --accent-h: #818cf8; --accent-sub: rgba(99,102,241,.12);
+    --green: #22c55e; --red: #ef4444; --yellow: #eab308; --cyan: #06b6d4;
+    --radius: 10px; --radius-sm: 6px; --radius-lg: 16px;
+    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif;
+    --mono: 'Cascadia Code', 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+    --sidebar-w: 260px;
+    --transition: .2s cubic-bezier(.4,0,.2,1);
+}
 
-        /* ── Header ─── */
-        header {
-            background: var(--surface); border-bottom: 1px solid var(--border);
-            padding: 1rem 2rem; display: flex; align-items: center; gap: 1rem;
-        }
-        header h1 { font-size: 1.3rem; font-weight: 700; }
-        header h1 span { color: var(--accent); }
-        header .badge {
-            background: var(--accent); color: var(--bg); padding: 2px 10px;
-            border-radius: 20px; font-size: .75rem; font-weight: 600;
-        }
-        header .health { margin-left: auto; font-size: .85rem; color: var(--muted); }
-        header .health .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; }
-        header .health .dot.ok { background: var(--green); }
-        header .health .dot.err { background: var(--red); }
+/* ═══ RESET ══════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{font-family:var(--font);background:var(--bg-0);color:var(--text-1);min-height:100vh;overflow:hidden}
+a{color:var(--accent-h);text-decoration:none}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--border-hover)}
 
-        /* ── Layout ─── */
-        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
-        .tabs { display: flex; gap: .5rem; margin-bottom: 1.5rem; }
-        .tab {
-            padding: .5rem 1.2rem; border-radius: var(--radius); cursor: pointer;
-            background: var(--surface); border: 1px solid var(--border);
-            color: var(--muted); font-size: .9rem; transition: .2s;
-        }
-        .tab.active, .tab:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
-        .panel { display: none; }
-        .panel.active { display: block; }
+/* ═══ LAYOUT ═════════════════════════════════════════════════ */
+.app{display:flex;height:100vh}
 
-        /* ── Cards ─── */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1rem; }
-        .card {
-            background: var(--surface); border: 1px solid var(--border);
-            border-radius: var(--radius); padding: 1.2rem; transition: .2s;
-        }
-        .card:hover { border-color: var(--accent); }
-        .card h3 { font-size: 1rem; color: var(--accent); margin-bottom: .3rem; }
-        .card .version { font-size: .75rem; color: var(--muted); }
-        .card .desc { font-size: .85rem; margin: .6rem 0; color: var(--text); }
-        .card .actions { display: flex; gap: .5rem; margin-top: .8rem; }
+/* ── SIDEBAR ─────────────────────────────────────────────── */
+.sidebar{
+    width:var(--sidebar-w);min-width:var(--sidebar-w);
+    background:var(--bg-1);border-right:1px solid var(--border);
+    display:flex;flex-direction:column;overflow:hidden;
+    transition:margin var(--transition);z-index:50;
+}
+.sidebar-header{padding:1.25rem 1rem .75rem;border-bottom:1px solid var(--border)}
+.sidebar-logo{display:flex;align-items:center;gap:.6rem;margin-bottom:.75rem}
+.sidebar-logo h1{font-size:1.15rem;font-weight:700;color:var(--text-0)}
+.sidebar-logo h1 em{font-style:normal;background:linear-gradient(135deg,var(--accent),#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sidebar-logo .ver{font-size:.65rem;padding:2px 8px;border-radius:20px;background:var(--accent-sub);color:var(--accent-h);font-weight:600}
 
-        /* ── Buttons ─── */
-        .btn {
-            padding: .4rem 1rem; border-radius: 6px; border: 1px solid var(--border);
-            background: var(--surface); color: var(--text); cursor: pointer;
-            font-size: .8rem; transition: .2s;
-        }
-        .btn:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
-        .btn.primary { background: var(--accent); color: var(--bg); border-color: var(--accent); }
-        .btn.primary:hover { opacity: .85; }
+.search-box{position:relative}
+.search-box input{
+    width:100%;padding:.55rem .75rem .55rem 2.1rem;
+    background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-sm);
+    color:var(--text-1);font-size:.8rem;outline:none;transition:border var(--transition);
+}
+.search-box input:focus{border-color:var(--accent)}
+.search-box input::placeholder{color:var(--text-3)}
+.search-box svg{position:absolute;left:.6rem;top:50%;transform:translateY(-50%);color:var(--text-3);width:14px;height:14px}
 
-        /* ── Forms ─── */
-        .form-group { margin-bottom: 1rem; }
-        .form-group label { display: block; font-size: .85rem; color: var(--muted); margin-bottom: .3rem; }
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%; padding: .6rem .8rem; border-radius: 6px;
-            border: 1px solid var(--border); background: var(--bg);
-            color: var(--text); font-family: var(--font); font-size: .9rem;
-        }
-        .form-group textarea { min-height: 120px; resize: vertical; font-family: 'Consolas', monospace; }
+.sidebar-nav{flex:1;overflow-y:auto;padding:.75rem 0}
+.nav-section{padding:0 .75rem;margin-bottom:.25rem}
+.nav-section-title{font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;color:var(--text-3);padding:.5rem .5rem .3rem;font-weight:600}
+.nav-item{
+    display:flex;align-items:center;gap:.6rem;
+    padding:.5rem .75rem;margin:1px .25rem;border-radius:var(--radius-sm);
+    cursor:pointer;font-size:.82rem;color:var(--text-2);
+    transition:all var(--transition);user-select:none;
+}
+.nav-item:hover{background:var(--bg-2);color:var(--text-1)}
+.nav-item.active{background:var(--accent-sub);color:var(--accent-h);font-weight:500}
+.nav-item .icon{width:18px;text-align:center;font-size:.9rem;flex-shrink:0}
+.nav-item .count{margin-left:auto;font-size:.7rem;color:var(--text-3);background:var(--bg-3);padding:1px 7px;border-radius:10px;font-weight:500}
+.nav-item.active .count{background:var(--accent-sub);color:var(--accent-h)}
+.nav-divider{height:1px;background:var(--border);margin:.5rem 1rem}
 
-        /* ── Output / Modal ─── */
-        .output {
-            background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
-            padding: 1rem; margin-top: 1rem; font-family: 'Consolas', monospace;
-            font-size: .85rem; white-space: pre-wrap; max-height: 400px; overflow-y: auto;
-        }
-        .output.success { border-color: var(--green); }
-        .output.error { border-color: var(--red); }
+.sidebar-footer{padding:.75rem 1rem;border-top:1px solid var(--border);font-size:.7rem;color:var(--text-3);text-align:center}
 
-        .modal-overlay {
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6);
-            z-index: 100; align-items: center; justify-content: center;
-        }
-        .modal-overlay.show { display: flex; }
-        .modal {
-            background: var(--surface); border: 1px solid var(--border);
-            border-radius: var(--radius); padding: 1.5rem; width: 90%; max-width: 700px;
-            max-height: 80vh; overflow-y: auto;
-        }
-        .modal h2 { font-size: 1.1rem; margin-bottom: 1rem; color: var(--accent); }
-        .modal .close { float: right; cursor: pointer; color: var(--muted); font-size: 1.2rem; }
+/* ── MAIN ────────────────────────────────────────────────── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
 
-        .toast {
-            position: fixed; bottom: 2rem; right: 2rem; padding: .8rem 1.5rem;
-            border-radius: var(--radius); font-size: .85rem; z-index: 200;
-            animation: fadeIn .3s; display: none;
-        }
-        .toast.show { display: block; }
-        .toast.ok { background: var(--green); color: var(--bg); }
-        .toast.err { background: var(--red); color: #fff; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; } }
+/* Header bar */
+.topbar{
+    display:flex;align-items:center;gap:1rem;
+    padding:.75rem 1.5rem;border-bottom:1px solid var(--border);
+    background:var(--bg-1);flex-shrink:0;min-height:52px;
+}
+.topbar-left{display:flex;align-items:center;gap:.75rem}
+.burger{display:none;background:none;border:none;color:var(--text-2);cursor:pointer;padding:4px}
+.burger svg{width:20px;height:20px}
+.health-badge{
+    display:flex;align-items:center;gap:.4rem;
+    font-size:.78rem;color:var(--text-2);
+}
+.health-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;transition:background var(--transition)}
+.health-dot.ok{background:var(--green);box-shadow:0 0 6px rgba(34,197,94,.5)}
+.health-dot.err{background:var(--red);box-shadow:0 0 6px rgba(239,68,68,.5)}
+.health-dot.loading{background:var(--yellow);animation:pulse 1.2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
-        /* ── Misc ─── */
-        .empty { text-align: center; padding: 3rem; color: var(--muted); }
-        .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin .6s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-    </style>
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:.75rem}
+.stat-chip{font-size:.75rem;color:var(--text-3);background:var(--bg-2);padding:3px 10px;border-radius:20px}
+.stat-chip strong{color:var(--text-2)}
+
+/* Content area */
+.content{flex:1;overflow-y:auto;padding:1.5rem}
+.content-title{font-size:1.05rem;font-weight:600;color:var(--text-0);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+
+/* ═══ SKILL CARDS ════════════════════════════════════════════ */
+.skills-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(310px,1fr));
+    gap:.85rem;
+}
+.skill-card{
+    background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);
+    padding:1.1rem 1.2rem;cursor:pointer;
+    transition:all var(--transition);position:relative;overflow:hidden;
+}
+.skill-card::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:2px;
+    background:linear-gradient(90deg,var(--cat-color,var(--accent)),transparent);
+    opacity:0;transition:opacity var(--transition);
+}
+.skill-card:hover{border-color:var(--border-hover);transform:translateY(-1px);box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.skill-card:hover::before{opacity:1}
+.card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem;margin-bottom:.4rem}
+.card-name{font-size:.9rem;font-weight:600;color:var(--text-0)}
+.card-ver{font-size:.65rem;color:var(--text-3);padding:1px 6px;border-radius:4px;background:var(--bg-3);white-space:nowrap}
+.card-cat{display:inline-flex;align-items:center;gap:.3rem;font-size:.68rem;padding:1px 8px;border-radius:12px;margin-bottom:.5rem;font-weight:500}
+.card-desc{font-size:.78rem;color:var(--text-2);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-actions{display:flex;gap:.4rem;margin-top:.75rem}
+
+/* ═══ BUTTONS ════════════════════════════════════════════════ */
+.btn{
+    padding:.35rem .8rem;border-radius:var(--radius-sm);border:1px solid var(--border);
+    background:var(--bg-3);color:var(--text-1);cursor:pointer;font-size:.75rem;
+    font-family:var(--font);transition:all var(--transition);display:inline-flex;
+    align-items:center;gap:.3rem;
+}
+.btn:hover{background:var(--border-hover);border-color:var(--border-hover)}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-h);border-color:var(--accent-h)}
+.btn-sm{padding:.25rem .6rem;font-size:.7rem}
+.btn-ghost{background:transparent;border-color:transparent}
+.btn-ghost:hover{background:var(--bg-3)}
+
+/* ═══ MODAL ══════════════════════════════════════════════════ */
+.modal-overlay{
+    display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);
+    z-index:200;align-items:center;justify-content:center;
+    backdrop-filter:blur(4px);animation:fadeIn .15s;
+}
+.modal-overlay.show{display:flex}
+.modal{
+    background:var(--bg-1);border:1px solid var(--border);border-radius:var(--radius-lg);
+    width:94%;max-width:780px;max-height:88vh;display:flex;flex-direction:column;
+    box-shadow:0 24px 80px rgba(0,0,0,.5);animation:slideUp .2s ease-out;
+}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+.modal-header{
+    display:flex;align-items:flex-start;justify-content:space-between;
+    padding:1.25rem 1.5rem 1rem;border-bottom:1px solid var(--border);flex-shrink:0;
+}
+.modal-header-left h2{font-size:1.05rem;font-weight:600;color:var(--text-0);margin-bottom:.25rem}
+.modal-header-left .meta{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
+.modal-header-left .meta span{font-size:.72rem;color:var(--text-3)}
+.modal-close{
+    background:none;border:none;color:var(--text-3);cursor:pointer;
+    width:30px;height:30px;border-radius:var(--radius-sm);display:flex;
+    align-items:center;justify-content:center;transition:all var(--transition);flex-shrink:0;
+}
+.modal-close:hover{background:var(--bg-3);color:var(--text-1)}
+
+.modal-tabs{
+    display:flex;gap:0;border-bottom:1px solid var(--border);padding:0 1.5rem;flex-shrink:0;
+}
+.modal-tab{
+    padding:.6rem 1rem;font-size:.8rem;color:var(--text-3);cursor:pointer;
+    border-bottom:2px solid transparent;transition:all var(--transition);font-weight:500;
+}
+.modal-tab:hover{color:var(--text-1)}
+.modal-tab.active{color:var(--accent-h);border-bottom-color:var(--accent)}
+
+.modal-body{flex:1;overflow-y:auto;padding:1.25rem 1.5rem}
+.tab-pane{display:none}
+.tab-pane.active{display:block}
+
+/* Schema table */
+.schema-section{margin-bottom:1.25rem}
+.schema-section h4{font-size:.8rem;font-weight:600;color:var(--text-2);margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.schema-table{width:100%;border-collapse:collapse;font-size:.78rem}
+.schema-table th{text-align:left;padding:.45rem .6rem;color:var(--text-3);font-weight:500;border-bottom:1px solid var(--border);font-size:.7rem;text-transform:uppercase;letter-spacing:.04em}
+.schema-table td{padding:.45rem .6rem;border-bottom:1px solid var(--border);color:var(--text-1);vertical-align:top}
+.schema-table tr:last-child td{border-bottom:none}
+.type-badge{font-size:.68rem;padding:1px 6px;border-radius:4px;font-family:var(--mono);font-weight:500}
+.type-string{background:rgba(34,197,94,.12);color:var(--green)}
+.type-integer,.type-number{background:rgba(6,182,212,.12);color:var(--cyan)}
+.type-boolean{background:rgba(234,179,8,.12);color:var(--yellow)}
+.type-array{background:rgba(168,85,247,.12);color:#a855f7}
+.type-object{background:rgba(249,115,22,.12);color:#f97316}
+.required-dot{color:var(--red);font-weight:700}
+
+/* Description text */
+.desc-block{font-size:.82rem;color:var(--text-2);line-height:1.65;margin-bottom:1rem}
+.skill-md-block{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem;font-size:.78rem;color:var(--text-2);line-height:1.6;white-space:pre-wrap;max-height:300px;overflow-y:auto;font-family:var(--font)}
+
+/* ═══ RUN FORM ═══════════════════════════════════════════════ */
+.run-mode-toggle{display:flex;gap:0;margin-bottom:1rem;background:var(--bg-2);border-radius:var(--radius-sm);padding:3px;width:fit-content}
+.run-mode-btn{
+    padding:.35rem .9rem;font-size:.75rem;border:none;background:none;
+    color:var(--text-3);cursor:pointer;border-radius:4px;transition:all var(--transition);font-family:var(--font);
+}
+.run-mode-btn.active{background:var(--bg-3);color:var(--text-0);font-weight:500}
+
+.form-group{margin-bottom:.9rem}
+.form-label{display:flex;align-items:center;gap:.3rem;font-size:.78rem;color:var(--text-2);margin-bottom:.3rem;font-weight:500}
+.form-label .req{color:var(--red);font-size:.7rem}
+.form-label .type-hint{font-size:.65rem;color:var(--text-3);font-family:var(--mono);margin-left:auto}
+.form-input,.form-textarea,.form-select{
+    width:100%;padding:.5rem .7rem;border:1px solid var(--border);border-radius:var(--radius-sm);
+    background:var(--bg-2);color:var(--text-1);font-size:.82rem;
+    font-family:var(--font);outline:none;transition:border var(--transition);
+}
+.form-input:focus,.form-textarea:focus,.form-select:focus{border-color:var(--accent)}
+.form-textarea{min-height:80px;resize:vertical;font-family:var(--mono);font-size:.78rem}
+.form-checkbox-wrap{display:flex;align-items:center;gap:.5rem;padding:.3rem 0}
+.form-checkbox{width:16px;height:16px;accent-color:var(--accent)}
+.form-hint{font-size:.7rem;color:var(--text-3);margin-top:.15rem}
+
+/* Run result */
+.run-result{margin-top:1rem;border-radius:var(--radius-sm);overflow:hidden}
+.run-result-header{display:flex;align-items:center;gap:.5rem;padding:.5rem .75rem;font-size:.75rem;font-weight:600}
+.run-result-header.success{background:rgba(34,197,94,.1);color:var(--green)}
+.run-result-header.error{background:rgba(239,68,68,.1);color:var(--red)}
+.run-result-body{background:var(--bg-0);border:1px solid var(--border);border-top:none;padding:.75rem;font-family:var(--mono);font-size:.75rem;white-space:pre-wrap;max-height:320px;overflow-y:auto;color:var(--text-2);line-height:1.5}
+
+/* ═══ SYNC PANEL ═════════════════════════════════════════════ */
+.sync-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.sync-card{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem}
+.sync-card h3{font-size:.95rem;font-weight:600;color:var(--text-0);margin-bottom:.25rem;display:flex;align-items:center;gap:.4rem}
+.sync-card p{font-size:.78rem;color:var(--text-3);margin-bottom:1rem}
+
+/* ═══ EMPTY / LOADING ════════════════════════════════════════ */
+.empty-state{text-align:center;padding:4rem 2rem;color:var(--text-3)}
+.empty-state .icon{font-size:2.5rem;margin-bottom:.75rem;opacity:.5}
+.empty-state p{font-size:.85rem}
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ═══ TOAST ══════════════════════════════════════════════════ */
+.toast{
+    position:fixed;bottom:1.5rem;right:1.5rem;padding:.7rem 1.2rem;
+    border-radius:var(--radius-sm);font-size:.8rem;z-index:300;
+    display:none;box-shadow:0 8px 32px rgba(0,0,0,.4);
+    animation:slideUp .2s ease-out;font-weight:500;
+}
+.toast.show{display:flex;align-items:center;gap:.4rem}
+.toast.ok{background:var(--green);color:#000}
+.toast.err{background:var(--red);color:#fff}
+
+/* ═══ RESPONSIVE ═════════════════════════════════════════════ */
+@media(max-width:840px){
+    .sidebar{position:fixed;left:0;top:0;bottom:0;margin-left:calc(-1 * var(--sidebar-w));z-index:100}
+    .sidebar.open{margin-left:0;box-shadow:8px 0 32px rgba(0,0,0,.5)}
+    .burger{display:flex}
+    .sync-grid{grid-template-columns:1fr}
+    .skills-grid{grid-template-columns:1fr}
+}
+@media(max-width:500px){
+    .modal{width:100%;max-width:100%;max-height:100vh;border-radius:0}
+}
+</style>
 </head>
 <body>
 
-<header>
-    <h1>⚡ <span>SkillForge</span></h1>
-    <div class="badge">v0.1.0</div>
-    <div class="health">
-        <span class="dot" id="healthDot"></span>
-        <span id="healthText">Checking…</span>
+<div class="app">
+
+<!-- ═══════════════════ SIDEBAR ═══════════════════ -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-logo">
+            <h1>⚡ <em>SkillForge</em></h1>
+            <span class="ver">v0.1.0</span>
+        </div>
+        <div class="search-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <input type="text" id="searchInput" placeholder="Search skills…">
+        </div>
     </div>
-</header>
-
-<div class="container">
-
-    <!-- Tabs -->
-    <div class="tabs">
-        <div class="tab active" data-tab="skills">🧩 Skills</div>
-        <div class="tab" data-tab="run">▶️ Run</div>
-        <div class="tab" data-tab="sync">🔄 Sync & Import</div>
+    <nav class="sidebar-nav" id="sidebarNav">
+        <div class="nav-section">
+            <div class="nav-section-title">Browse</div>
+            <div class="nav-item active" data-category="all">
+                <span class="icon">📦</span> All Skills <span class="count" id="totalCount">0</span>
+            </div>
+        </div>
+        <div class="nav-divider"></div>
+        <div class="nav-section">
+            <div class="nav-section-title">Categories</div>
+            <div id="categoryList"></div>
+        </div>
+        <div class="nav-divider"></div>
+        <div class="nav-section">
+            <div class="nav-item" data-category="__sync">
+                <span class="icon">🔄</span> Sync & Import
+            </div>
+        </div>
+    </nav>
+    <div class="sidebar-footer">
+        SkillForge — Agent-Ready Runtime
     </div>
+</aside>
 
-    <!-- ═══ Skills Panel ═══ -->
-    <div class="panel active" id="panel-skills">
-        <div class="grid" id="skillsGrid">
-            <div class="empty">Loading skills…</div>
+<!-- ═══════════════════ MAIN ═════════════════════ -->
+<div class="main">
+
+    <!-- Top bar -->
+    <div class="topbar">
+        <div class="topbar-left">
+            <button class="burger" onclick="toggleSidebar()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+            </button>
+            <div class="health-badge">
+                <span class="health-dot loading" id="healthDot"></span>
+                <span id="healthText">Connecting…</span>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <span class="stat-chip">Skills: <strong id="statSkills">—</strong></span>
+            <span class="stat-chip">Categories: <strong id="statCats">—</strong></span>
         </div>
     </div>
 
-    <!-- ═══ Run Panel ═══ -->
-    <div class="panel" id="panel-run">
-        <div class="card" style="max-width:600px">
-            <h3>Execute a Skill</h3>
-            <div class="form-group">
-                <label>Skill</label>
-                <select id="runSkillSelect"><option value="">Loading…</option></select>
-            </div>
-            <div class="form-group">
-                <label>Input JSON</label>
-                <textarea id="runInput">{"data": {}}</textarea>
-            </div>
-            <button class="btn primary" id="runBtn">▶ Run</button>
-            <div class="output" id="runOutput" style="display:none"></div>
-        </div>
-    </div>
-
-    <!-- ═══ Sync Panel ═══ -->
-    <div class="panel" id="panel-sync">
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem;">
-            <!-- Sync from repo -->
-            <div class="card">
-                <h3>🔄 Sync All Skills from Repo</h3>
-                <p style="font-size:.85rem;color:var(--muted);margin:.5rem 0;">Pull all valid skills from a GitHub repository into community/.</p>
-                <div class="form-group">
-                    <label>Repository URL</label>
-                    <input id="syncUrl" placeholder="https://github.com/user/skillforge-community">
-                </div>
-                <div class="form-group">
-                    <label>Branch</label>
-                    <input id="syncBranch" value="main">
-                </div>
-                <button class="btn primary" id="syncBtn">🔄 Sync</button>
-                <div class="output" id="syncOutput" style="display:none"></div>
-            </div>
-
-            <!-- Import single skill -->
-            <div class="card">
-                <h3>📥 Import Single Skill</h3>
-                <p style="font-size:.85rem;color:var(--muted);margin:.5rem 0;">Import one skill by specifying its path in a repo.</p>
-                <div class="form-group">
-                    <label>Repository URL</label>
-                    <input id="importUrl" placeholder="https://github.com/user/repo">
-                </div>
-                <div class="form-group">
-                    <label>Skill Path</label>
-                    <input id="importPath" placeholder="skills/data/my-tool">
-                </div>
-                <div class="form-group">
-                    <label>Branch</label>
-                    <input id="importBranch" value="main">
-                </div>
-                <button class="btn primary" id="importBtn">📥 Import</button>
-                <div class="output" id="importOutput" style="display:none"></div>
-            </div>
-        </div>
+    <!-- Content -->
+    <div class="content" id="mainContent">
+        <div class="empty-state"><div class="spinner"></div><p style="margin-top:1rem">Loading skills…</p></div>
     </div>
 
 </div>
+</div>
 
-<!-- Skill Detail Modal -->
+<!-- ═══════════════════ MODAL ════════════════════ -->
 <div class="modal-overlay" id="detailModal">
     <div class="modal">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <h2 id="modalTitle">Skill Info</h2>
-        <div id="modalBody"></div>
+        <div class="modal-header">
+            <div class="modal-header-left">
+                <h2 id="modalTitle">—</h2>
+                <div class="meta" id="modalMeta"></div>
+            </div>
+            <button class="modal-close" onclick="closeModal()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <div class="modal-tabs">
+            <div class="modal-tab active" data-mtab="info" onclick="switchModalTab('info')">Overview</div>
+            <div class="modal-tab" data-mtab="schema" onclick="switchModalTab('schema')">Input / Output</div>
+            <div class="modal-tab" data-mtab="run" onclick="switchModalTab('run')">▶ Run</div>
+        </div>
+        <div class="modal-body">
+            <div class="tab-pane active" id="mtab-info"></div>
+            <div class="tab-pane" id="mtab-schema"></div>
+            <div class="tab-pane" id="mtab-run"></div>
+        </div>
     </div>
 </div>
 
@@ -212,196 +370,379 @@
 <div class="toast" id="toast"></div>
 
 <script>
-const API = '';  // same origin
+/* ═══════════════════════════════════════════════════════════════
+   STATE & CONSTANTS
+   ═══════════════════════════════════════════════════════════════ */
+const API = '';
+let allSkills = [];
+let currentCategory = 'all';
+let currentSkillDetail = null;
 
-// ── Tabs ────────────────────────────────────────────────────
-document.querySelectorAll('.tab').forEach(t => {
-    t.addEventListener('click', () => {
-        document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
-        document.querySelectorAll('.panel').forEach(x => x.classList.remove('active'));
-        t.classList.add('active');
-        document.getElementById('panel-' + t.dataset.tab).classList.add('active');
-    });
-});
+const CAT_META = {
+    ai:         {icon:'🤖', label:'AI & ML',          color:'#8b5cf6'},
+    api:        {icon:'🔌', label:'API Tools',        color:'#06b6d4'},
+    code:       {icon:'💻', label:'Code Gen',         color:'#22c55e'},
+    css:        {icon:'🎨', label:'CSS Utils',        color:'#f472b6'},
+    data:       {icon:'📊', label:'Data Processing',  color:'#3b82f6'},
+    devops:     {icon:'⚙️', label:'DevOps',           color:'#f59e0b'},
+    js:         {icon:'🟨', label:'JavaScript',       color:'#eab308'},
+    media:      {icon:'🖼️', label:'Media',            color:'#ec4899'},
+    mediscreen: {icon:'🏥', label:'Mediscreen',       color:'#ef4444'},
+    ui:         {icon:'🎯', label:'UI / UX',          color:'#14b8a6'},
+};
 
-// ── Toast ───────────────────────────────────────────────────
-function toast(msg, ok = true) {
+function catInfo(cat) { return CAT_META[cat] || {icon:'📁', label:cat, color:'#6366f1'}; }
+
+/* ═══ TOAST ══════════════════════════════════════════════════ */
+function toast(msg, ok=true) {
     const el = document.getElementById('toast');
     el.textContent = msg;
     el.className = 'toast show ' + (ok ? 'ok' : 'err');
-    setTimeout(() => el.classList.remove('show'), 3000);
+    clearTimeout(el._t);
+    el._t = setTimeout(() => el.classList.remove('show'), 3500);
 }
 
-// ── Health ──────────────────────────────────────────────────
+/* ═══ HEALTH ═════════════════════════════════════════════════ */
 async function checkHealth() {
     try {
         const r = await fetch(API + '/health');
         const d = await r.json();
-        document.getElementById('healthDot').className = 'dot ok';
-        document.getElementById('healthText').textContent = `${d.skills_loaded} skills • v${d.version}`;
+        document.getElementById('healthDot').className = 'health-dot ok';
+        document.getElementById('healthText').textContent = `Healthy · v${d.version}`;
+        document.getElementById('statSkills').textContent = d.skills_loaded;
     } catch {
-        document.getElementById('healthDot').className = 'dot err';
+        document.getElementById('healthDot').className = 'health-dot err';
         document.getElementById('healthText').textContent = 'Offline';
     }
 }
 
-// ── Load Skills ─────────────────────────────────────────────
+/* ═══ LOAD SKILLS ════════════════════════════════════════════ */
 async function loadSkills() {
     try {
         const r = await fetch(API + '/api/skills');
-        const skills = await r.json();
-        const grid = document.getElementById('skillsGrid');
-        const select = document.getElementById('runSkillSelect');
-
-        if (skills.length === 0) {
-            grid.innerHTML = '<div class="empty">No skills found.</div>';
-            return;
-        }
-
-        grid.innerHTML = skills.map(s => `
-            <div class="card">
-                <h3>${s.skill_id}</h3>
-                <span class="version">v${s.version || '?'}</span>
-                <div class="desc">${s.title || 'No description'}</div>
-                <div class="actions">
-                    <button class="btn" onclick="showInfo('${s.skill_id}')">ℹ️ Info</button>
-                    <button class="btn" onclick="quickRun('${s.skill_id}')">▶ Run</button>
-                </div>
-            </div>
-        `).join('');
-
-        select.innerHTML = skills.map(s =>
-            `<option value="${s.skill_id}">${s.skill_id}</option>`
-        ).join('');
+        allSkills = await r.json();
+        buildCategoryNav();
+        renderSkills();
     } catch (e) {
-        document.getElementById('skillsGrid').innerHTML = '<div class="empty">Failed to load skills.</div>';
+        document.getElementById('mainContent').innerHTML =
+            '<div class="empty-state"><div class="icon">⚠️</div><p>Failed to load skills.</p></div>';
     }
 }
 
-// ── Skill Info Modal ────────────────────────────────────────
-async function showInfo(skillId) {
-    const r = await fetch(API + `/api/skills/${skillId}/info`);
-    const d = await r.json();
-    document.getElementById('modalTitle').textContent = d.skill_id;
-    document.getElementById('modalBody').innerHTML = `
-        <p><strong>Version:</strong> ${d.version}</p>
-        <p><strong>Description:</strong> ${d.description || '—'}</p>
-        <h4 style="margin-top:1rem;color:var(--muted)">Input Schema</h4>
-        <pre class="output">${JSON.stringify(d.schema_input, null, 2)}</pre>
-        <h4 style="margin-top:1rem;color:var(--muted)">Output Schema</h4>
-        <pre class="output">${JSON.stringify(d.schema_output, null, 2)}</pre>
-        ${d.skill_md ? `<h4 style="margin-top:1rem;color:var(--muted)">SKILL.md</h4><pre class="output">${d.skill_md}</pre>` : ''}
-    `;
+function buildCategoryNav() {
+    const cats = {};
+    allSkills.forEach(s => { const c = s.category || 'other'; cats[c] = (cats[c] || 0) + 1; });
+
+    document.getElementById('totalCount').textContent = allSkills.length;
+    document.getElementById('statSkills').textContent = allSkills.length;
+    document.getElementById('statCats').textContent = Object.keys(cats).length;
+
+    const listEl = document.getElementById('categoryList');
+    listEl.innerHTML = Object.keys(cats).sort().map(c => {
+        const m = catInfo(c);
+        return `<div class="nav-item" data-category="${c}">
+            <span class="icon">${m.icon}</span> ${m.label}
+            <span class="count">${cats[c]}</span>
+        </div>`;
+    }).join('');
+
+    document.querySelectorAll('.nav-item[data-category]').forEach(el => {
+        el.addEventListener('click', () => {
+            if (el.dataset.category === '__sync') { showSyncPanel(); return; }
+            document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
+            el.classList.add('active');
+            currentCategory = el.dataset.category;
+            renderSkills();
+            document.getElementById('sidebar').classList.remove('open');
+        });
+    });
+}
+
+/* ═══ RENDER GRID ════════════════════════════════════════════ */
+function renderSkills() {
+    const query = (document.getElementById('searchInput').value || '').toLowerCase();
+    let skills = allSkills;
+    if (currentCategory !== 'all') skills = skills.filter(s => s.category === currentCategory);
+    if (query) skills = skills.filter(s =>
+        (s.skill_id||'').toLowerCase().includes(query) ||
+        (s.title||'').toLowerCase().includes(query) ||
+        (s.description||'').toLowerCase().includes(query));
+
+    const content = document.getElementById('mainContent');
+    if (skills.length === 0) {
+        content.innerHTML = '<div class="empty-state"><div class="icon">🔍</div><p>No skills found.</p></div>';
+        return;
+    }
+
+    let title = '';
+    if (currentCategory === 'all') {
+        title = `<div class="content-title">📦 All Skills <span class="stat-chip">${skills.length}</span></div>`;
+    } else {
+        const m = catInfo(currentCategory);
+        title = `<div class="content-title">${m.icon} ${m.label} <span class="cat-badge" style="background:${m.color}22;color:${m.color}">${skills.length} skills</span></div>`;
+    }
+
+    content.innerHTML = title + '<div class="skills-grid">' + skills.map(s => {
+        const m = catInfo(s.category);
+        return `<div class="skill-card" style="--cat-color:${m.color}" onclick="openDetail('${s.skill_id}')">
+            <div class="card-head">
+                <span class="card-name">${s.skill_id}</span>
+                <span class="card-ver">v${s.version||'?'}</span>
+            </div>
+            <span class="card-cat" style="background:${m.color}18;color:${m.color}">${m.icon} ${m.label}</span>
+            <div class="card-desc">${s.description || s.title || 'No description'}</div>
+            <div class="card-actions">
+                <button class="btn btn-sm" onclick="event.stopPropagation();openDetail('${s.skill_id}','schema')">📋 Schema</button>
+                <button class="btn btn-sm btn-primary" onclick="event.stopPropagation();openDetail('${s.skill_id}','run')">▶ Run</button>
+            </div>
+        </div>`;
+    }).join('') + '</div>';
+}
+
+/* ═══ DETAIL MODAL ═══════════════════════════════════════════ */
+async function openDetail(skillId, tab='info') {
     document.getElementById('detailModal').classList.add('show');
-}
-function closeModal() { document.getElementById('detailModal').classList.remove('show'); }
-document.getElementById('detailModal').addEventListener('click', e => {
-    if (e.target === e.currentTarget) closeModal();
-});
+    document.getElementById('modalTitle').textContent = skillId;
+    document.getElementById('modalMeta').innerHTML = '<span class="spinner"></span> Loading…';
+    document.querySelectorAll('.tab-pane').forEach(p => { p.className = 'tab-pane'; p.innerHTML = ''; });
+    document.getElementById('mtab-info').classList.add('active');
+    switchModalTab('info');
 
-// ── Quick Run (from card) ───────────────────────────────────
-function quickRun(skillId) {
-    document.getElementById('runSkillSelect').value = skillId;
-    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
-    document.querySelectorAll('.panel').forEach(x => x.classList.remove('active'));
-    document.querySelector('[data-tab="run"]').classList.add('active');
-    document.getElementById('panel-run').classList.add('active');
+    try {
+        const r = await fetch(API + `/api/skills/${skillId}/info`);
+        currentSkillDetail = await r.json();
+        renderModalContent(currentSkillDetail);
+        switchModalTab(tab);
+    } catch(e) {
+        document.getElementById('mtab-info').innerHTML = '<div class="empty-state"><p>Failed to load skill info.</p></div>';
+    }
 }
 
-// ── Run Skill ───────────────────────────────────────────────
-document.getElementById('runBtn').addEventListener('click', async () => {
-    const skillId = document.getElementById('runSkillSelect').value;
-    const inputEl = document.getElementById('runInput');
-    const outEl = document.getElementById('runOutput');
-    if (!skillId) return;
+function renderModalContent(d) {
+    const m = catInfo(d.skill_id.split('.')[0]);
+    document.getElementById('modalMeta').innerHTML = `
+        <span style="font-size:.72rem;padding:2px 8px;border-radius:12px;background:${m.color}18;color:${m.color};font-weight:500">${m.icon} ${m.label}</span>
+        <span>v${d.version}</span>
+        ${d.title ? `<span>· ${d.title}</span>` : ''}`;
+
+    // ── Info tab
+    let infoHtml = '';
+    if (d.description) infoHtml += `<div class="desc-block">${escapeHtml(d.description)}</div>`;
+    if (d.skill_md) {
+        infoHtml += `<h4 style="font-size:.8rem;color:var(--text-2);margin-bottom:.5rem">📄 SKILL.md</h4>`;
+        infoHtml += `<div class="skill-md-block">${escapeHtml(d.skill_md)}</div>`;
+    }
+    if (!infoHtml) infoHtml = '<div class="desc-block" style="color:var(--text-3)">No additional documentation.</div>';
+    document.getElementById('mtab-info').innerHTML = infoHtml;
+
+    // ── Schema tab
+    let schemaHtml = '';
+    if (d.schema_input && d.schema_input.properties)
+        schemaHtml += renderSchemaSection('📥 Input Properties', d.schema_input);
+    if (d.schema_output && d.schema_output.properties)
+        schemaHtml += renderSchemaSection('📤 Output Properties', d.schema_output);
+    if (!schemaHtml) schemaHtml = '<div class="desc-block" style="color:var(--text-3)">No schema information.</div>';
+    document.getElementById('mtab-schema').innerHTML = schemaHtml;
+
+    // ── Run tab
+    renderRunTab(d);
+}
+
+function renderSchemaSection(title, schema) {
+    const props = schema.properties || {};
+    const required = schema.required || [];
+    let rows = Object.entries(props).map(([name, prop]) => {
+        const type = prop.type || 'any';
+        const isReq = required.includes(name);
+        const desc = prop.description || '—';
+        const def = prop.default !== undefined ? `<br><span style="color:var(--text-3);font-size:.68rem">Default: <code>${JSON.stringify(prop.default)}</code></span>` : '';
+        return `<tr>
+            <td><code style="color:var(--accent-h);font-family:var(--mono);font-size:.76rem">${name}</code></td>
+            <td><span class="type-badge type-${type}">${type}</span></td>
+            <td>${isReq ? '<span class="required-dot">●</span>' : ''}</td>
+            <td>${desc}${def}</td>
+        </tr>`;
+    }).join('');
+    return `<div class="schema-section"><h4>${title}</h4>
+        <table class="schema-table"><tr><th>Field</th><th>Type</th><th>Req</th><th>Description</th></tr>${rows}</table></div>`;
+}
+
+/* ── Run tab ── */
+function renderRunTab(d) {
+    const pane = document.getElementById('mtab-run');
+    const schema = d.schema_input || {};
+    const props = schema.properties || {};
+    const required = schema.required || [];
+
+    let formHtml = `<div class="run-mode-toggle">
+        <button class="run-mode-btn active" onclick="toggleRunMode('form',this)">Form</button>
+        <button class="run-mode-btn" onclick="toggleRunMode('json',this)">JSON</button>
+    </div><div id="runFormMode">`;
+
+    Object.entries(props).forEach(([name, prop]) => {
+        const type = prop.type || 'string';
+        const isReq = required.includes(name);
+        const desc = prop.description || '';
+        const def = prop.default;
+
+        formHtml += `<div class="form-group"><label class="form-label">${name} ${isReq ? '<span class="req">*</span>' : ''}<span class="type-hint">${type}</span></label>`;
+
+        if (type === 'boolean') {
+            formHtml += `<div class="form-checkbox-wrap"><input type="checkbox" class="form-checkbox" data-field="${name}" ${def === true ? 'checked' : ''}><span style="font-size:.78rem;color:var(--text-2)">Enable</span></div>`;
+        } else if (type === 'array' || type === 'object') {
+            const defVal = def !== undefined ? JSON.stringify(def, null, 2) : (type === 'array' ? '[]' : '{}');
+            formHtml += `<textarea class="form-textarea" data-field="${name}" placeholder='${type === 'array' ? '[...]' : '{...}'}'>${defVal}</textarea>`;
+        } else if (type === 'integer' || type === 'number') {
+            formHtml += `<input type="number" class="form-input" data-field="${name}" value="${def !== undefined ? def : ''}" placeholder="${escapeHtml(desc)}">`;
+        } else {
+            formHtml += `<input type="text" class="form-input" data-field="${name}" value="${def !== undefined ? def : ''}" placeholder="${escapeHtml(desc)}">`;
+        }
+        if (desc) formHtml += `<div class="form-hint">${escapeHtml(desc)}</div>`;
+        formHtml += `</div>`;
+    });
+
+    if (Object.keys(props).length === 0)
+        formHtml += `<div class="desc-block" style="color:var(--text-3)">No defined input properties — use JSON mode.</div>`;
+
+    formHtml += `</div>`;
+
+    // JSON mode
+    const defaultJson = {};
+    Object.entries(props).forEach(([name, prop]) => {
+        if (prop.default !== undefined) defaultJson[name] = prop.default;
+        else if (required.includes(name)) defaultJson[name] = prop.type === 'array' ? [] : prop.type === 'object' ? {} : prop.type === 'boolean' ? false : prop.type === 'integer' || prop.type === 'number' ? 0 : '';
+    });
+    formHtml += `<div id="runJsonMode" style="display:none"><div class="form-group"><label class="form-label">JSON Input</label>
+        <textarea class="form-textarea" id="runJsonInput" style="min-height:160px">${escapeHtml(JSON.stringify({data: defaultJson}, null, 2))}</textarea></div></div>`;
+
+    formHtml += `<button class="btn btn-primary" onclick="executeSkill()" id="execBtn" style="margin-top:.5rem">▶ Execute Skill</button><div id="runResultArea"></div>`;
+    pane.innerHTML = formHtml;
+}
+
+function toggleRunMode(mode, btn) {
+    document.querySelectorAll('.run-mode-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('runFormMode').style.display = mode === 'form' ? 'block' : 'none';
+    document.getElementById('runJsonMode').style.display = mode === 'json' ? 'block' : 'none';
+}
+
+async function executeSkill() {
+    if (!currentSkillDetail) return;
+    const skillId = currentSkillDetail.skill_id;
+    const btn = document.getElementById('execBtn');
+    const resultArea = document.getElementById('runResultArea');
+    btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Running…'; resultArea.innerHTML = '';
 
     let body;
-    try { body = JSON.parse(inputEl.value); } catch { toast('Invalid JSON input', false); return; }
-
-    outEl.style.display = 'block';
-    outEl.className = 'output';
-    outEl.textContent = 'Running…';
+    const jsonMode = document.getElementById('runJsonMode').style.display !== 'none';
+    if (jsonMode) {
+        try { body = JSON.parse(document.getElementById('runJsonInput').value); }
+        catch { toast('Invalid JSON input', false); btn.disabled = false; btn.textContent = '▶ Execute Skill'; return; }
+    } else {
+        const data = {};
+        const props = (currentSkillDetail.schema_input || {}).properties || {};
+        document.querySelectorAll('[data-field]').forEach(el => {
+            const name = el.dataset.field;
+            const type = (props[name] || {}).type || 'string';
+            if (type === 'boolean') data[name] = el.checked;
+            else if (type === 'array' || type === 'object') { const v = el.value.trim(); if (v) { try { data[name] = JSON.parse(v); } catch { data[name] = v; } } }
+            else if (type === 'integer') { if (el.value) data[name] = parseInt(el.value, 10); }
+            else if (type === 'number') { if (el.value) data[name] = parseFloat(el.value); }
+            else { if (el.value) data[name] = el.value; }
+        });
+        body = { data };
+    }
 
     try {
-        const r = await fetch(API + `/api/skills/${skillId}/run`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body),
-        });
+        const r = await fetch(API + `/api/skills/${skillId}/run`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
         const d = await r.json();
-        outEl.textContent = JSON.stringify(d, null, 2);
-        outEl.classList.add(d.success ? 'success' : 'error');
-        toast(d.success ? 'Skill executed successfully' : 'Skill returned an error', d.success);
-    } catch (e) {
-        outEl.textContent = 'Request failed: ' + e.message;
-        outEl.classList.add('error');
+        const ok = d.success;
+        resultArea.innerHTML = `<div class="run-result">
+            <div class="run-result-header ${ok?'success':'error'}">${ok?'✅ Success':'❌ Error'}${d.error? ' — '+escapeHtml(d.error):''}</div>
+            <div class="run-result-body">${escapeHtml(JSON.stringify(d, null, 2))}</div></div>`;
+        toast(ok ? 'Skill executed successfully' : 'Skill returned an error', ok);
+    } catch(e) {
+        resultArea.innerHTML = `<div class="run-result"><div class="run-result-header error">❌ Request Failed</div>
+            <div class="run-result-body">${escapeHtml(e.message)}</div></div>`;
         toast('Request failed', false);
     }
-});
+    btn.disabled = false; btn.textContent = '▶ Execute Skill';
+}
 
-// ── Sync ────────────────────────────────────────────────────
-document.getElementById('syncBtn').addEventListener('click', async () => {
+/* ═══ SYNC PANEL ═════════════════════════════════════════════ */
+function showSyncPanel() {
+    document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
+    document.querySelector('[data-category="__sync"]').classList.add('active');
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('mainContent').innerHTML = `
+    <div class="content-title">🔄 Sync & Import</div>
+    <div class="sync-grid">
+        <div class="sync-card"><h3>🔄 Sync Repository</h3><p>Pull all valid skills from a GitHub repository into community/.</p>
+            <div class="form-group"><label class="form-label">Repository URL</label><input class="form-input" id="syncUrl" placeholder="https://github.com/user/skillforge-community"></div>
+            <div class="form-group"><label class="form-label">Branch</label><input class="form-input" id="syncBranch" value="main"></div>
+            <button class="btn btn-primary" onclick="doSync()">🔄 Sync</button><div id="syncOutput"></div></div>
+        <div class="sync-card"><h3>📥 Import Single Skill</h3><p>Import one skill by specifying its path in a repository.</p>
+            <div class="form-group"><label class="form-label">Repository URL</label><input class="form-input" id="importUrl" placeholder="https://github.com/user/repo"></div>
+            <div class="form-group"><label class="form-label">Skill Path</label><input class="form-input" id="importPath" placeholder="skills/data/my-tool"></div>
+            <div class="form-group"><label class="form-label">Branch</label><input class="form-input" id="importBranch" value="main"></div>
+            <button class="btn btn-primary" onclick="doImport()">📥 Import</button><div id="importOutput"></div></div>
+    </div>`;
+}
+
+async function doSync() {
     const url = document.getElementById('syncUrl').value;
     const branch = document.getElementById('syncBranch').value;
-    const outEl = document.getElementById('syncOutput');
     if (!url) { toast('Enter a repository URL', false); return; }
-
-    outEl.style.display = 'block';
-    outEl.textContent = 'Syncing…';
-    outEl.className = 'output';
-
+    const out = document.getElementById('syncOutput');
+    out.innerHTML = '<div style="margin-top:.75rem;font-size:.8rem;color:var(--text-3)"><span class="spinner"></span> Syncing…</div>';
     try {
-        const r = await fetch(API + '/api/sync/github', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ repo_url: url, branch }),
-        });
+        const r = await fetch(API + '/api/sync/github', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({repo_url:url,branch}) });
         const d = await r.json();
-        outEl.textContent = JSON.stringify(d, null, 2);
-        outEl.classList.add(d.success ? 'success' : 'error');
+        out.innerHTML = `<div class="run-result" style="margin-top:.75rem"><div class="run-result-header ${d.success?'success':'error'}">${d.success?'✅ Sync Complete':'❌ Sync Failed'}</div>
+            <div class="run-result-body">${escapeHtml(JSON.stringify(d, null, 2))}</div></div>`;
         if (d.success) { toast('Sync complete!'); loadSkills(); checkHealth(); }
-        else toast(d.message, false);
-    } catch (e) {
-        outEl.textContent = 'Error: ' + e.message;
-        outEl.classList.add('error');
-    }
-});
+    } catch(e) { out.innerHTML = `<div style="margin-top:.75rem;color:var(--red);font-size:.8rem">${escapeHtml(e.message)}</div>`; }
+}
 
-// ── Import ──────────────────────────────────────────────────
-document.getElementById('importBtn').addEventListener('click', async () => {
+async function doImport() {
     const url = document.getElementById('importUrl').value;
     const path = document.getElementById('importPath').value;
     const branch = document.getElementById('importBranch').value;
-    const outEl = document.getElementById('importOutput');
     if (!url || !path) { toast('Fill in URL and path', false); return; }
-
-    outEl.style.display = 'block';
-    outEl.textContent = 'Importing…';
-    outEl.className = 'output';
-
+    const out = document.getElementById('importOutput');
+    out.innerHTML = '<div style="margin-top:.75rem;font-size:.8rem;color:var(--text-3)"><span class="spinner"></span> Importing…</div>';
     try {
-        const r = await fetch(API + '/api/sync/import', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ repo_url: url, skill_path: path, branch }),
-        });
+        const r = await fetch(API + '/api/sync/import', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({repo_url:url,skill_path:path,branch}) });
         const d = await r.json();
-        outEl.textContent = JSON.stringify(d, null, 2);
-        outEl.classList.add(d.success ? 'success' : 'error');
+        out.innerHTML = `<div class="run-result" style="margin-top:.75rem"><div class="run-result-header ${d.success?'success':'error'}">${d.success?'✅ Imported':'❌ Failed'}</div>
+            <div class="run-result-body">${escapeHtml(JSON.stringify(d, null, 2))}</div></div>`;
         if (d.success) { toast('Skill imported!'); loadSkills(); checkHealth(); }
-        else toast(d.message, false);
-    } catch (e) {
-        outEl.textContent = 'Error: ' + e.message;
-        outEl.classList.add('error');
-    }
+    } catch(e) { out.innerHTML = `<div style="margin-top:.75rem;color:var(--red);font-size:.8rem">${escapeHtml(e.message)}</div>`; }
+}
+
+/* ═══ MODAL HELPERS ══════════════════════════════════════════ */
+function switchModalTab(tab) {
+    document.querySelectorAll('.modal-tab').forEach(t => t.classList.toggle('active', t.dataset.mtab === tab));
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.toggle('active', p.id === 'mtab-' + tab));
+}
+function closeModal() { document.getElementById('detailModal').classList.remove('show'); currentSkillDetail = null; }
+document.getElementById('detailModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+function escapeHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+/* ═══ SEARCH ═════════════════════════════════════════════════ */
+let searchTimer;
+document.getElementById('searchInput').addEventListener('input', () => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => { if (currentCategory === '__sync') currentCategory = 'all'; renderSkills(); }, 200);
 });
 
-// ── Init ────────────────────────────────────────────────────
+/* ═══ INIT ═══════════════════════════════════════════════════ */
 checkHealth();
 loadSkills();
 setInterval(checkHealth, 30000);
 </script>
-
 </body>
 </html>
 

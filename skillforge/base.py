@@ -83,16 +83,33 @@ class BaseWorker(ABC):
         return errors
 
     def describe(self) -> dict[str, Any]:
-        """Return a description dict suitable for ``skillforge list``."""
+        """Return a description dict suitable for ``skillforge list`` and the dashboard.
+
+        Includes ``category`` (parsed from *skill_id*) and ``description``
+        (read from the co-located ``schema.json``).
+        """
         info: dict[str, Any] = {
             "skill_id": self.skill_id,
             "version": self.version,
+            "category": self.skill_id.split(".")[0] if "." in self.skill_id else "",
         }
+
+        # Title from SKILL.md first line
         skill_md = self._skill_md_path()
         if skill_md is not None and skill_md.exists():
             text = skill_md.read_text(encoding="utf-8")
             first_line = text.strip().splitlines()[0] if text.strip() else ""
             info["title"] = first_line.lstrip("# ").strip()
+
+        # Description from schema.json
+        schema_path = self._schema_path()
+        if schema_path is not None and schema_path.exists():
+            try:
+                schema_data = json.loads(schema_path.read_text(encoding="utf-8"))
+                info["description"] = schema_data.get("description", "")
+            except (json.JSONDecodeError, OSError):
+                pass
+
         return info
 
     # ── private helpers ──────────────────────────────────────────────

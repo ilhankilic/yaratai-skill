@@ -1,0 +1,48 @@
+{
+  "skill_id": "devops.env-secret-scan",
+  "version": "1.0.0",
+  "description": "Scan source code for hardcoded API keys, secrets, and credentials.",
+  "input": {
+    "type": "object",
+    "required": [
+      "files"
+    ],
+    "properties": {
+      "files": {
+        "type": "array"
+      },
+      "scan_types": {
+        "type": "array"
+      },
+      "severity_filter": {
+        "type": "string"
+      },
+      "whitelist_patterns": {
+        "type": "array"
+      }
+    }
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "findings": {
+        "type": "array"
+      },
+      "critical_count": {
+        "type": "integer"
+      },
+      "high_count": {
+        "type": "integer"
+      },
+      "medium_count": {
+        "type": "integer"
+      },
+      "clean_files": {
+        "type": "integer"
+      },
+      "summary": {
+        "type": "string"
+      }
+    }
+  }
+}

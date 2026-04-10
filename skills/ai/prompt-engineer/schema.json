@@ -1,0 +1,57 @@
+{
+  "skill_id": "ai.prompt-engineer",
+  "version": "1.0.0",
+  "description": "Transform raw requests into structured, effective LLM prompts.",
+  "input": {
+    "type": "object",
+    "required": [
+      "raw_request"
+    ],
+    "properties": {
+      "raw_request": {
+        "type": "string"
+      },
+      "target_model": {
+        "type": "string"
+      },
+      "task_type": {
+        "type": "string"
+      },
+      "output_format": {
+        "type": "string"
+      },
+      "language": {
+        "type": "string"
+      },
+      "add_examples": {
+        "type": "boolean"
+      },
+      "chain_of_thought": {
+        "type": "boolean"
+      }
+    }
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "system_prompt": {
+        "type": "string"
+      },
+      "user_prompt": {
+        "type": "string"
+      },
+      "full_prompt": {
+        "type": "string"
+      },
+      "techniques_used": {
+        "type": "array"
+      },
+      "token_estimate": {
+        "type": "integer"
+      },
+      "suggestions": {
+        "type": "array"
+      }
+    }
+  }
+}

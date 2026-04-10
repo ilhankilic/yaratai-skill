@@ -5,6 +5,7 @@ from __future__ import annotations
 import importlib
 import importlib.util
 import logging
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -15,13 +16,25 @@ logger = logging.getLogger("skillforge")
 # Root skills directory (relative to repo root)
 _SKILLS_ROOT = Path(__file__).resolve().parent.parent / "skills"
 
+# In-memory cache — populated on first call, cleared with force=True.
+_registry_cache: dict[str, type[BaseWorker]] | None = None
 
-def discover_skills(root: Path | None = None) -> dict[str, type[BaseWorker]]:
+
+def discover_skills(
+    root: Path | None = None,
+    *,
+    force: bool = False,
+) -> dict[str, type[BaseWorker]]:
     """Walk the skills tree and return a mapping of *skill_id → Worker class*.
 
-    Each valid skill directory must contain a ``worker.py`` that defines
-    a class inheriting from :class:`BaseWorker` with a non-empty ``skill_id``.
+    Results are cached in memory after the first call.  Pass ``force=True``
+    to rebuild the cache (e.g. after a sync operation).
     """
+    global _registry_cache
+
+    if _registry_cache is not None and not force and root is None:
+        return _registry_cache
+
     root = root or _SKILLS_ROOT
     registry: dict[str, type[BaseWorker]] = {}
 
@@ -39,6 +52,10 @@ def discover_skills(root: Path | None = None) -> dict[str, type[BaseWorker]]:
                 logger.debug("Registered skill: %s", cls.skill_id)
         except Exception:
             logger.exception("Failed to load worker: %s", worker_file)
+
+    # Store in cache when using the default root
+    if root == _SKILLS_ROOT:
+        _registry_cache = registry
 
     return registry
 
@@ -70,15 +87,28 @@ def list_skills(category: str | None = None, root: Path | None = None) -> list[d
 # ── private helpers ──────────────────────────────────────────────────
 
 def _load_worker_class(worker_file: Path) -> type[BaseWorker] | None:
-    """Import *worker_file* and return the first BaseWorker subclass found."""
-    spec = importlib.util.spec_from_file_location(
-        f"skillforge._dyn.{worker_file.parent.name}",
-        worker_file,
+    """Import *worker_file* and return the first BaseWorker subclass found.
+
+    The module is registered in ``sys.modules`` so that
+    :meth:`BaseWorker._skill_dir` (which uses ``inspect.getmodule``) can
+    resolve back to the file and locate co-located ``schema.json`` / ``SKILL.md``.
+    """
+    # Build a unique module name from the relative path to avoid collisions
+    # e.g. skills/data/json-to-csv/worker.py → skillforge._dyn.data.json_to_csv
+    try:
+        rel_parts = worker_file.parent.relative_to(_SKILLS_ROOT).parts
+    except ValueError:
+        rel_parts = (worker_file.parent.name,)
+    mod_name = "skillforge._dyn." + ".".join(
+        p.replace("-", "_") for p in rel_parts
     )
+
+    spec = importlib.util.spec_from_file_location(mod_name, worker_file)
     if spec is None or spec.loader is None:
         return None
 
     module = importlib.util.module_from_spec(spec)
+    sys.modules[mod_name] = module  # register so inspect.getmodule() works
     spec.loader.exec_module(module)  # type: ignore[union-attr]
 
     for attr_name in dir(module):

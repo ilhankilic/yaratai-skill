@@ -1,0 +1,5 @@
+{
+  "skill_id": "api.rest-scaffold",
+  "version": "1.0.0",
+  "description": "Generate FastAPI or Express route code from OpenAPI schema."
+}

@@ -1,0 +1,5 @@
+{
+  "skill_id": "media.img-resize-batch",
+  "version": "1.0.0",
+  "description": "Batch resize images with fit modes."
+}

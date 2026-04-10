@@ -1,0 +1,5 @@
+{
+  "skill_id": "api.postman-export",
+  "version": "1.0.0",
+  "description": "Generate Postman Collection v2.1 from OpenAPI or endpoint list."
+}

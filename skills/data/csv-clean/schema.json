@@ -1,0 +1,48 @@
+{
+  "skill_id": "data.csv-clean",
+  "version": "1.0.0",
+  "description": "Clean CSV: remove empty rows, duplicates, normalize dates, fix types.",
+  "input": {
+    "type": "object",
+    "required": [
+      "csv_content"
+    ],
+    "properties": {
+      "csv_content": {
+        "type": "string"
+      },
+      "delimiter": {
+        "type": "string"
+      },
+      "operations": {
+        "type": "array"
+      },
+      "date_columns": {
+        "type": "array"
+      },
+      "date_format": {
+        "type": "string"
+      }
+    }
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "cleaned_csv": {
+        "type": "string"
+      },
+      "original_rows": {
+        "type": "integer"
+      },
+      "cleaned_rows": {
+        "type": "integer"
+      },
+      "removed_rows": {
+        "type": "integer"
+      },
+      "operations_log": {
+        "type": "array"
+      }
+    }
+  }
+}

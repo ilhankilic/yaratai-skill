@@ -1,0 +1,5 @@
+{
+  "skill_id": "js.ts-migrate",
+  "version": "1.0.0",
+  "description": "Convert JavaScript code to TypeScript with type inference."
+}

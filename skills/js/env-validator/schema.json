@@ -1,0 +1,45 @@
+{
+  "skill_id": "js.env-validator",
+  "version": "1.0.0",
+  "description": "Validate .env files for missing, malformed, and weak values.",
+  "input": {
+    "type": "object",
+    "required": [
+      "env_content"
+    ],
+    "properties": {
+      "env_content": {
+        "type": "string"
+      },
+      "schema": {
+        "type": "object"
+      },
+      "check_secrets": {
+        "type": "boolean"
+      }
+    }
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "valid": {
+        "type": "boolean"
+      },
+      "missing_required": {
+        "type": "array"
+      },
+      "type_errors": {
+        "type": "array"
+      },
+      "weak_secrets": {
+        "type": "array"
+      },
+      "exposed_defaults": {
+        "type": "array"
+      },
+      "parsed": {
+        "type": "object"
+      }
+    }
+  }
+}

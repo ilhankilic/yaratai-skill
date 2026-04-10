@@ -1,0 +1,55 @@
+{
+  "skill_id": "devops.dockerfile-gen",
+  "version": "1.0.0",
+  "description": "Generate optimized multi-stage Dockerfile from dependency files.",
+  "input": {
+    "type": "object",
+    "required": [
+      "dependency_file",
+      "file_type"
+    ],
+    "properties": {
+      "dependency_file": {
+        "type": "string"
+      },
+      "file_type": {
+        "type": "string"
+      },
+      "app_type": {
+        "type": "string"
+      },
+      "expose_port": {
+        "type": "integer"
+      },
+      "health_check": {
+        "type": "boolean"
+      },
+      "non_root_user": {
+        "type": "boolean"
+      }
+    }
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "dockerfile": {
+        "type": "string"
+      },
+      "dockerignore": {
+        "type": "string"
+      },
+      "base_image_used": {
+        "type": "string"
+      },
+      "stage_count": {
+        "type": "integer"
+      },
+      "estimated_size_mb": {
+        "type": "integer"
+      },
+      "security_notes": {
+        "type": "array"
+      }
+    }
+  }
+}

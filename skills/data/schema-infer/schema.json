@@ -1,0 +1,48 @@
+{
+  "skill_id": "data.schema-infer",
+  "version": "1.0.0",
+  "description": "Infer JSON Schema (draft-7) from sample data.",
+  "input": {
+    "type": "object",
+    "required": [
+      "sample_data"
+    ],
+    "properties": {
+      "sample_data": {
+        "type": "object"
+      },
+      "title": {
+        "type": "string"
+      },
+      "required_threshold": {
+        "type": "number"
+      },
+      "additional_properties": {
+        "type": "boolean"
+      },
+      "detect_formats": {
+        "type": "boolean"
+      }
+    }
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "schema": {
+        "type": "object"
+      },
+      "schema_json": {
+        "type": "string"
+      },
+      "field_count": {
+        "type": "integer"
+      },
+      "required_count": {
+        "type": "integer"
+      },
+      "detected_formats": {
+        "type": "object"
+      }
+    }
+  }
+}

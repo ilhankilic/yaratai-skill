@@ -1,0 +1,5 @@
+{
+  "skill_id": "devops.k8s-manifest",
+  "version": "1.0.0",
+  "description": "Generate Kubernetes manifests (Deployment, Service, Ingress, etc.)."
+}

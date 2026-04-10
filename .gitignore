@@ -29,3 +29,6 @@ Thumbs.db
 # Environment
 .env
 
+# Local test folder (not pushed — used for manual smoke tests)
+test-local/
+

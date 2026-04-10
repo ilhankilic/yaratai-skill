@@ -1,0 +1,5 @@
+{
+  "skill_id": "ai.embedding-search",
+  "version": "1.0.0",
+  "description": "In-memory semantic search using cosine similarity (offline-testable)."
+}
