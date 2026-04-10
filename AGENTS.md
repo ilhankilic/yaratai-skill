@@ -40,7 +40,7 @@
 - **Branch**: Always work on `dev` branch. Never push directly to `master`.
 - **Git flow**: `dev` = development, `master` = production (stable releases only via merge from dev).
 - When adding a skill: `git checkout dev` → create the 4-file quartet under `skills/<category>/<name>/`.
-- When a user pulls this repo, the agent should: (1) `git checkout dev`, (2) `docker compose up -d`, (3) open `http://localhost:9147`, (4) use the API to execute skills.
+- When a user pulls this repo, the agent should: (1) `git clone https://github.com/ilhankilic/yaratai-skill.git && cd yaratai-skill`, (2) `docker compose up -d`, (3) open `http://localhost:9147`, (4) use the API to execute skills.
 - When editing the master prompt (`skillforge-claude-desktop-prompt.md`): preserve session block ordering.
 - Run tests: `pytest tests/ -v` (core + API), `pytest skills/<cat>/<name>/test.py -v` (per-skill).
 - Skill tests mock all external services — they must run offline.

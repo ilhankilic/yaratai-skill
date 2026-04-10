@@ -21,7 +21,7 @@ COPY tests/ tests/
 COPY STANDARD.md .
 COPY AGENTS.md .
 
-RUN pip install --no-cache-dir -e ".[dev]"
+RUN pip install --no-cache-dir -e ".[all]"
 
 # Expose API port
 EXPOSE 9147

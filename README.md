@@ -20,8 +20,8 @@ Every developer keeps re-writing the same utility code — CSV converters, PDF p
 ## Quick Start (Docker — Recommended)
 
 ```bash
-git clone https://github.com/yaratai/skillforge.git
-cd skillforge
+git clone https://github.com/ilhankilic/yaratai-skill.git
+cd yaratai-skill
 docker compose up -d
 ```
 
