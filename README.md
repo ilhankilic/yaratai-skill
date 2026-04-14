@@ -119,7 +119,7 @@ SkillForge is designed to be **discovered and used by AI coding agents** automat
 
 ### Claude Code / Claude Desktop
 
-After cloning this repository, Claude reads `AGENTS.md` and `skillforge-claude-desktop-prompt.md` and can:
+After cloning this repository, Claude reads `AGENTS.md` and can:
 
 1. Start the runtime: `docker compose up -d`
 2. Discover all skills: `GET http://localhost:9147/api/skills`

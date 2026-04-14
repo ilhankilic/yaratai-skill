@@ -12,12 +12,13 @@ build/
 venv/
 ENV/
 
-# IDE
+# IDE / Editor
 .idea/
 .vscode/
 *.iml
 *.swp
 *.swo
+*.code-workspace
 
 # pytest
 .pytest_cache/
@@ -26,9 +27,16 @@ ENV/
 .DS_Store
 Thumbs.db
 
-# Environment
+# Environment (real secrets — .env.example is OK)
 .env
 
-# Local test folder (not pushed — used for manual smoke tests)
+# Local test folder (manual smoke tests — not for public)
 test-local/
+
+# Internal development scripts (not for public distribution)
+generate_skills.py
+generate_skills_2.py
+skillforge-claude-desktop-prompt.md
+docs/skillforge-skill-codegen-prompt.md
+docs/kontrol/
 
