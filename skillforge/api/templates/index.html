@@ -678,13 +678,13 @@ function showSyncPanel() {
     <div class="content-title">🔄 Sync & Import</div>
     <div class="sync-grid">
         <div class="sync-card"><h3>🔄 Sync Repository</h3><p>Pull all valid skills from a GitHub repository into community/.</p>
-            <div class="form-group"><label class="form-label">Repository URL</label><input class="form-input" id="syncUrl" placeholder="https://github.com/user/skillforge-community"></div>
-            <div class="form-group"><label class="form-label">Branch</label><input class="form-input" id="syncBranch" value="main"></div>
+            <div class="form-group"><label class="form-label">Repository URL</label><input class="form-input" id="syncUrl" value="https://github.com/ilhankilic/yaratai-skill" placeholder="https://github.com/ilhankilic/yaratai-skill"></div>
+            <div class="form-group"><label class="form-label">Branch</label><input class="form-input" id="syncBranch" value="dev"></div>
             <button class="btn btn-primary" onclick="doSync()">🔄 Sync</button><div id="syncOutput"></div></div>
         <div class="sync-card"><h3>📥 Import Single Skill</h3><p>Import one skill by specifying its path in a repository.</p>
-            <div class="form-group"><label class="form-label">Repository URL</label><input class="form-input" id="importUrl" placeholder="https://github.com/user/repo"></div>
+            <div class="form-group"><label class="form-label">Repository URL</label><input class="form-input" id="importUrl" value="https://github.com/ilhankilic/yaratai-skill" placeholder="https://github.com/ilhankilic/yaratai-skill"></div>
             <div class="form-group"><label class="form-label">Skill Path</label><input class="form-input" id="importPath" placeholder="skills/data/my-tool"></div>
-            <div class="form-group"><label class="form-label">Branch</label><input class="form-input" id="importBranch" value="main"></div>
+            <div class="form-group"><label class="form-label">Branch</label><input class="form-input" id="importBranch" value="dev"></div>
             <button class="btn btn-primary" onclick="doImport()">📥 Import</button><div id="importOutput"></div></div>
     </div>`;
 }
