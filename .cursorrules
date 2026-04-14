@@ -1,0 +1,27 @@
+SkillForge — Stateless AI skill runtime at http://localhost:9147
+
+Start: docker compose up -d
+Health: GET /health → {"status":"healthy","skills_loaded":51}
+
+Use skills:
+  GET  /api/skills                 — list all (filter: ?category=data, ?search=csv)
+  GET  /api/skills/{id}/info       — read schema BEFORE calling
+  POST /api/skills/{id}/run        — execute with {"data": {...}}
+
+Response format (always):
+  {"success": true/false, "data": {...}, "error": "", "metadata": {...}}
+
+Worker contract (immutable):
+  class Worker(BaseWorker):
+      skill_id = "category.skill-name"
+      def run(self, input: SkillInput) -> SkillOutput: ...
+
+Rules:
+  - No database, no global state, no print()
+  - Never raise — return SkillOutput(success=False, error="...")
+  - Type hints on every function, docstrings on every class
+  - schema.json first, then worker.py, SKILL.md, test.py (min 3 tests)
+  - All dev on 'dev' branch, never push directly to 'master'
+
+See AGENTS.md for full reference.
+
