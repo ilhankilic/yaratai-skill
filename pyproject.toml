@@ -17,6 +17,12 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "License :: OSI Approved :: Apache Software License",
 ]
+
+[project.urls]
+Homepage = "https://github.com/ilhankilic/yaratai-skill"
+Repository = "https://github.com/ilhankilic/yaratai-skill"
+Issues = "https://github.com/ilhankilic/yaratai-skill/issues"
+Documentation = "https://github.com/ilhankilic/yaratai-skill/blob/master/README.md"
 dependencies = [
     "typer>=0.9",
     "pydantic>=2.0",
