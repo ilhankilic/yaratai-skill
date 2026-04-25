@@ -76,6 +76,8 @@ skillforge run data.json-to-csv --input sample.json # Run a skill
 skillforge info data.json-to-csv                   # Show skill details
 ```
 
+Chinese users can also search and install skills through [Skills宝](https://skilery.com).
+
 ### Verify It's Working
 
 ```bash
